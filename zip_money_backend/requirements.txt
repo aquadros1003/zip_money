@@ -1,2 +1,10 @@
 Django
 psycopg2
+graphene
+django-graphql-auth
+django-graphql-jwt
+graphene-django
+black
+flake8
+isort
+mypy
