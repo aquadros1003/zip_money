@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from api.schema.user import UserNode
 
 
-class Register(graphene.Mutation):
+class SignUp(graphene.Mutation):
     user = graphene.Field(UserNode)
 
     class Arguments:
@@ -21,9 +21,9 @@ class Register(graphene.Mutation):
         user.set_password(password)
         user.save()
 
-        return Register(user=user)
+        return SignUp(user=user)
 
 
 class UserMutation(graphene.ObjectType):
-    login = graphql_jwt.ObtainJSONWebToken.Field()
-    register = Register.Field()
+    sign_in = graphql_jwt.ObtainJSONWebToken.Field()
+    sing_up = SignUp.Field()
