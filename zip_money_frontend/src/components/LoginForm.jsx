@@ -1,56 +1,39 @@
-import React, { useEffect } from 'react';
-import { Button, Form, Input, Divider, Alert } from "antd";
+import React from 'react';
+import { Button, Form, Input, Divider, Alert, message } from "antd";
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { GoogleSVG, FacebookSVG } from '../assets/icon';
 import CustomIcon from './CustomIcon';
-import { 
-	signIn, 
-	showLoading, 
-	showAuthMessage, 
-	hideAuthMessage, 
-	signInWithGoogle, 
-	signInWithFacebook 
-} from '../redux/actions/Auth';
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
+import SIGN_IN from '../api/mutations/SignIn';
+import { useMutation } from '@apollo/client';
 
 export const LoginForm = props => {
 	const { 
 		otherSignIn, 
 		showForgetPassword, 
-		hideAuthMessage,
 		onForgetPasswordClick,
-		showLoading,
-		signInWithGoogle,
-		signInWithFacebook,
 		extra, 
-		signIn, 
-		token, 
-		loading,
-		redirect,
-		showMessage,
-		message,
-		allowRedirect
 	} = props
 
+	const [signIn, { data, loading, error}] = useMutation(SIGN_IN, {
+		onCompleted: data => {
+			localStorage.setItem('token', data.signIn.token)
+		}
+	})
+
 	const initialCredential = {
-		email: 'user1@themenate.net',
-		password: '2005ipo'
+		email: 'admin@admin.pl',
+		password: 'admin'
 	}
 
-	const onLogin = values => {
-		showLoading()
-		signIn(values);
-	};
+	const message = error ? error.message : data ? 'Login Successfull' : ''
+	const showMessage = error || data ? true : false
 
 	const onGoogleLogin = () => {
-		showLoading()
-		signInWithGoogle()
 	}
 
 	const onFacebookLogin = () => {
-		showLoading()
-		signInWithFacebook()
 	}
 	
 	const renderOtherSignIn = (
@@ -77,7 +60,7 @@ export const LoginForm = props => {
 			</div>
 		</div>
 	)
-
+	
 	return (
 		<>
 			<motion.div 
@@ -92,7 +75,9 @@ export const LoginForm = props => {
 				layout="vertical" 
 				name="login-form" 
 				initialValues={initialCredential}
-				onFinish={onLogin}
+				onFinish={values => {
+					signIn({ variables: { email: values.email, password: values.password } })
+				}}
 			>
 				<Form.Item 
 					name="email" 
@@ -104,7 +89,7 @@ export const LoginForm = props => {
 						},
 						{ 
 							type: 'email',
-							message: 'Please enter a validate email!'
+							message: 'Please enter a valid email!'
 						}
 					]}>
 					<Input prefix={<MailOutlined className="text-primary" />}/>
@@ -161,19 +146,5 @@ LoginForm.defaultProps = {
 	otherSignIn: true,
 	showForgetPassword: false
 };
-
-const mapStateToProps = ({auth}) => {
-	const {loading, message, showMessage, token, redirect} = auth;
-  return {loading, message, showMessage, token, redirect}
-}
-
-const mapDispatchToProps = {
-	signIn,
-	showAuthMessage,
-	showLoading,
-	hideAuthMessage,
-	signInWithGoogle,
-	signInWithFacebook
-}
 
 export default LoginForm

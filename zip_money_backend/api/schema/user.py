@@ -1,17 +1,13 @@
 import graphene
 from django.contrib.auth import get_user_model
+from graphene_django import DjangoObjectType
 
 
-class UserNode(graphene.ObjectType):
+class UserNode(DjangoObjectType):
     class Meta:
         model = get_user_model()
-        fields = ("id", "email", "username", "first_name", "last_name", "birth_date")
-
-    name = graphene.String()
-    email = graphene.String()
-
-    def resolve_email(self, info):
-        return self.email
-
-    def resolve_name(self, info):
-        return f"{self.first_name} {self.last_name}"
+        interfaces = (graphene.relay.Node,)
+        filter_fields = {
+            "username": ["exact", "icontains", "istartswith"],
+            "email": ["exact", "icontains"],
+        }

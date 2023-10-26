@@ -20,7 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-1^&iknife0q&f*lr61cto@pi6b@e523j!q7emqgs5_9-^*t54)"
+SECRET_KEY = (
+    "django-insecure-1^&iknife0q&f*lr61cto@pi6b@e523j!q7emqgs5_9-^*t54)"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "graphene_django",
+    "corsheaders",
     "users",
 ]
 
@@ -45,6 +48,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -66,6 +70,10 @@ AUTHENTICATION_BACKENDS = [
 AUTH_USER_MODEL = "users.User"
 
 ROOT_URLCONF = "zip_money_backend.urls"
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 TEMPLATES = [
     {
@@ -132,6 +140,14 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "mailhog"  # Host, na którym działa MailHog
+EMAIL_PORT = 1025  # Port, na którym działa MailHog
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False
+EMAIL_USE_LOCALTIME = True
+EMAIL_SUBJECT_PREFIX = "[ZipMoney]"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

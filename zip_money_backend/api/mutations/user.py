@@ -1,27 +1,23 @@
 import graphene
 import graphql_jwt
-from django.contrib.auth import get_user_model
-
-from api.schema.user import UserNode
+from users.services.user import UserService
 
 
 class SignUp(graphene.Mutation):
-    user = graphene.Field(UserNode)
+    success = graphene.Boolean()
 
     class Arguments:
         username = graphene.String(required=True)
-        password = graphene.String(required=True)
         email = graphene.String(required=True)
+        password = graphene.String(required=True)
+        confirm_password = graphene.String(required=True)
 
-    def mutate(self, info, username, password, email):
-        user = get_user_model()(
-            username=username,
-            email=email,
+    def mutate(self, info, username, email, password, confirm_password):
+        user_service = UserService()
+        success = user_service.register(
+            username, email, password, confirm_password
         )
-        user.set_password(password)
-        user.save()
-
-        return SignUp(user=user)
+        return SignUp(success=success)
 
 
 class UserMutation(graphene.ObjectType):

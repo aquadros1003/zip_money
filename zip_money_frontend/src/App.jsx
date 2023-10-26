@@ -1,10 +1,18 @@
-import Login from './views/Login'
-import './App.css'
+import Login from "./views/Login";
+import Register from "./views/Register";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "./App.css";
 
 function App() {
   return (
-      <Login allowRedirect={true}/>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

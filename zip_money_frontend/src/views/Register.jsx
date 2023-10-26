@@ -1,24 +1,23 @@
 import React from 'react'
-import LoginForm from '../components/LoginForm'
+import RegisterForm from "../components/RegisterForm";
 import { Card, Row, Col } from "antd";
 import Logo from '../assets/logo.png';
 import backgroundImage from '../assets/background.jpg';
 
-const Login = props => {
+const Register = props => {
 	return (
 		<div className="h-100" style={{backgroundImage: `url(${backgroundImage})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}>
 			<div className="container d-flex flex-column justify-content-center h-100">
 				<Row justify="center">
-					<Col xs={50} sm={30} md={30} lg={12}>
+                    <Col xs={50} sm={30} md={30} lg={12}>
 						<Card>
-							<div className="my-4">
+							<div className="my-2">
 								<div className="text-center">
-									<img className="img-fluid" src={Logo} alt="" width={158.4} height={158.4} />
-									<p>Don't have an account yet? <a href="/register">Sign Up</a></p>
+                                <a href="/login"><img className="img-fluid" src={Logo} alt="" width={158.4} height={158.4} /></a>
 								</div>
 								<Row justify="center">
-									<Col xs={24} sm={30} md={30} lg={20}>
-										<LoginForm {...props} />
+									<Col xs={24} sm={24} md={20} lg={20}>
+										<RegisterForm {...props}/>
 									</Col>
 								</Row>
 							</div>
@@ -30,4 +29,4 @@ const Login = props => {
 	)
 }
 
-export default Login
+export default Register
