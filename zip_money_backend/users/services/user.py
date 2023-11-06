@@ -4,7 +4,9 @@ from django.core.mail import send_mail
 
 
 class UserService:
-    def register(self, username, email, password, confirm_password) -> bool:
+    def register(
+        self, username: str, email: str, password: str, confirm_password: str
+    ) -> bool:
         if get_user_model().objects.filter(email=email).exists():
             raise Exception("Email already exists")
         if get_user_model().objects.filter(username=username).exists():

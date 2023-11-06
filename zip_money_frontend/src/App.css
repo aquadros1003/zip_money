@@ -1,10 +1,10 @@
 #root {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .logo {
@@ -41,4 +41,146 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.square-button {
+  width: 8em;
+  height: 3em;
+  border-radius: 0;
+  padding: 0.6em 1.2em;
+  margin: 0.5em;
+}
+
+.square-button:hover {
+  border-color: #646cff;
+}
+
+.section {
+  transition: all 0.3s ease-in-out;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em 1em;
+  color: #333;
+  text-align: center;
+  background-color: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(255, 255, 255, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+
+.hero-image {
+  width: 100%;
+  max-width: 500px;
+  padding: 1em 0em;
+}
+
+.features {
+  padding: 1em 1em;
+  background-color: #f9f9f9;
+  text-align: center;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+
+}
+
+.feature {
+  margin-bottom: 30px;
+}
+
+.feature-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 1em 0em;
+}
+
+.hero-button {
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  color: #000;
+  cursor: pointer;
+  display: inline-flex;
+  fill: #000;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  height: 48px;
+  justify-content: center;
+  letter-spacing: -0.8px;
+  line-height: 24px;
+  min-width: 140px;
+  outline: 0;
+  padding: 0 17px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.hero-button:focus {
+  color: #171e29;
+}
+
+.hero-button:hover {
+  border-color: #06f;
+  color: #06f;
+  fill: #06f;
+}
+
+.hero-button:active {
+  border-color: #06f;
+  color: #06f;
+  fill: #06f;
+}
+
+@media (min-width: 768px) {
+  .hero-button {
+    min-width: 170px;
+  }
+}
+
+.feature-img {
+  margin-bottom: 20px;
+  width: 60%;
+}
+
+.footer {
+  background-color: #f9f9f9;
+  color: #000000;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.aboutus {
+  background-color: #f5f5f5;
+  padding: 20px;
+  text-align: center;
+}
+
+.aboutus-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-text {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  text-align: left; 
+}
+
+.register {
+  border-radius: 8px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
 }

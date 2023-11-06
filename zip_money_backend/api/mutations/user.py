@@ -1,5 +1,5 @@
 import graphene
-import graphql_jwt
+from graphql_jwt import mutations
 from users.services.user import UserService
 
 
@@ -18,8 +18,10 @@ class SignUp(graphene.Mutation):
             username, email, password, confirm_password
         )
         return SignUp(success=success)
+    
+    
 
 
 class UserMutation(graphene.ObjectType):
-    sign_in = graphql_jwt.ObtainJSONWebToken.Field()
+    sign_in = mutations.ObtainJSONWebToken.Field()
     sing_up = SignUp.Field()
