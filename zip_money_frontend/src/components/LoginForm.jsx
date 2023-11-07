@@ -7,6 +7,7 @@ import CustomIcon from './CustomIcon';
 import { motion } from "framer-motion";
 import SIGN_IN from '../api/mutations/SignIn';
 import { useMutation } from '@apollo/client';
+import {useNavigate} from 'react-router-dom';
 
 export const LoginForm = props => {
 	const { 
@@ -15,10 +16,12 @@ export const LoginForm = props => {
 		onForgetPasswordClick,
 		extra, 
 	} = props
-
+	const navigate = useNavigate();
 	const [signIn, { data, loading, error}] = useMutation(SIGN_IN, {
 		onCompleted: data => {
 			localStorage.setItem('token', data.signIn.token)
+			localStorage.setItem('user', JSON.stringify(data.signIn.user))
+			navigate('/dashboard', { replace: true })
 		}
 	})
 

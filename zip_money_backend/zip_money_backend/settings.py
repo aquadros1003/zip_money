@@ -27,8 +27,7 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["http://localhost:3000/*", "localhost"]
 
 # Application definition
 
@@ -74,6 +73,17 @@ ROOT_URLCONF = "zip_money_backend.urls"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:3000",  
+)
+
+CORS_ALLOW_CREDENTIALS = True
+
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+}
 
 TEMPLATES = [
     {

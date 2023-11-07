@@ -1,6 +1,5 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Container, Row, Col } from "react-bootstrap";
 import Navigation from "../components/Navbar";
 import Hero from "../layouts/Hero";
 import Features from "../layouts/Features";

@@ -5,13 +5,15 @@ const SIGN_UP = gql`
     $email: String!
     $password: String!
     $confirmPassword: String!
-    $username: String!
+    $firstName: String!
+    $lastName: String!
   ) {
     singUp(
       email: $email
       password: $password
       confirmPassword: $confirmPassword
-      username: $username
+      firstName: $firstName
+      lastName: $lastName
     ) {
       success
     }
