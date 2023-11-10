@@ -5,7 +5,6 @@ import AboutUsImage from "../assets/aboutus.webp";
 
 const AboutUs = () => {
   const AboutUsRef = useRef(null);
-  console.log(AboutUsRef);
   return (
     <section className="aboutus d-flex align-items-center justify-content-center" ref={AboutUsRef}>
       <Container>

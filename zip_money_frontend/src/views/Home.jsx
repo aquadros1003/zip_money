@@ -8,12 +8,11 @@ import AboutUs from "../layouts/AboutUs";
 
 const Home = () => {
   const scrollToSection = (ref) => {
-    ref.current.scrollIntoView({ behavior: 'smooth' });
+    ref.current.scrollIntoView({ behavior: "smooth" });
   };
   return (
     <>
-      <Navigation 
-        scrollToSection={scrollToSection}/>
+      <Navigation scrollToSection={scrollToSection} />
       <Hero />
       <Features />
       <AboutUs />

@@ -12,6 +12,26 @@ import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router";
 
 const rules = {
+  first_name: [
+    {
+      required: true,
+      message: "Please input your first name",
+    },
+    {
+      min: 3,
+      message: "First name must be at least 3 characters",
+    }
+  ],
+  last_name: [
+    {
+      required: true,
+      message: "Please input your last name",
+    },
+    {
+      min: 3,
+      message: "Last name must be at least 3 characters",
+    }
+  ],
   email: [
     {
       required: true,
@@ -27,6 +47,18 @@ const rules = {
       required: true,
       message: "Please input your password",
     },
+    {
+      min: 8,
+      message: "Password must be at least 8 characters",
+    },
+    {
+      max: 20,
+      message: "Password must be at most 20 characters",
+    },
+    {
+      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
+      message: "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character",
+    }
   ],
   confirm: [
     {
@@ -83,13 +115,13 @@ export const RegisterForm = () => {
           });
         }}
       >
-        <Form.Item name="first_name" hasFeedback>
+        <Form.Item name="first_name" rules={rules.first_name}hasFeedback>
           <Input
             prefix={<MehOutlined className="text-primary" />}
             placeholder="First Name"
           />
         </Form.Item>
-        <Form.Item name="last_name" hasFeedback>
+        <Form.Item name="last_name" rules={rules.last_name}hasFeedback>
           <Input
             prefix={<MehOutlined className="text-primary" />}
             placeholder="Last Name"

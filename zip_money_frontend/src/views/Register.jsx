@@ -10,14 +10,14 @@ const Register = (props) => {
     <>
       <Navigation />
       <div
-        className="h-100"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
-        <div className="container py-4">
+        <div className="container py-5">
           <Row justify="center">
             <Col className="register" xs={50} sm={30} md={30} lg={12}>
               <Card>

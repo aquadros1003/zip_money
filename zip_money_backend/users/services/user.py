@@ -1,11 +1,22 @@
+import stat
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from users.models import User
 from django.core.mail import send_mail
 from graphql_jwt.shortcuts import get_token, create_refresh_token
 from django.contrib.auth import authenticate
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.http import urlsafe_base64_encode
+from django.template.loader import render_to_string
+from django.template import engines
+from django.utils.encoding import force_bytes
+from zip_money_backend.settings import BASE_DIR
 
 
 class UserService:
+    def __init__(self) -> None:
+        self.token_generator = PasswordResetTokenGenerator()
+
     def register(
         self,
         first_name: str,
@@ -24,22 +35,40 @@ class UserService:
             last_name=last_name,
         )
         user.set_password(password)
+        self._send_confirmation_email(user)
         user.save()
-        self._send_confirmation_email(user.email)
         return True
 
-    def login(self, email: str, password: str) -> tuple:
-        user = authenticate(email=email, password=password)
-        if user:
+    def login(self, info, email: str, password: str) -> tuple:
+        if user := authenticate(email=email, password=password):
             token = get_token(user)
+            info.context.jwt_token = token
+            info.context.jwt_refresh_token = create_refresh_token(user)
             return user, token
         raise Exception("Invalid credentials")
 
-    def _send_confirmation_email(self, email: str):
+    def logout(self, info) -> bool:
+        if info.context.user.is_anonymous:
+            raise Exception("User is not logged in")
+        info.context.delete_jwt_cookie = True
+        info.context.delete_refresh_token_cookie = True
+        return True
+
+    def _send_confirmation_email(self, user: User):
         subject = "Potwierdzenie rejestracji"
-        message = "Dziękujemy za rejestrację na naszym serwisie."
+        engine = engines["django"]
+        template = engine.from_string(
+            open(f"{BASE_DIR}/templates/emails/confirmation.html").read()
+        )
+        context = {
+            "user": user,
+            "domain": "localhost:8000",
+            "uid": urlsafe_base64_encode(force_bytes(user.id)),
+            "token": self.token_generator.make_token(user),
+        }
+        message = template.render(context)
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [
-            email,
+            user.email,
         ]
         send_mail(subject, message, email_from, recipient_list)

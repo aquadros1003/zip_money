@@ -9,6 +9,8 @@ import {
 } from "@ant-design/icons";
 import Icon from "../components/Icon";
 import AvatarImg from "../assets/avatar.jpg";
+import { useQuery } from "@apollo/client";
+import ME from "../api/queries/Me";
 
 const menuItem = [
   {
@@ -31,6 +33,7 @@ const menuItem = [
     title: "Help Center",
     icon: QuestionCircleOutlined,
     path: "/",
+    
   },
 ];
 
@@ -38,22 +41,14 @@ export const NavProfile = () => {
   const profileMenu = (
     <div className="nav-profile nav-dropdown">
       <div className="nav-profile-header">
-        <div className="d-flex">
-          <Avatar size={45} src={AvatarImg} />
-          <div className="pl-3">
-            <h4 className="mb-0">Admin</h4>
-          </div>
-        </div>
       </div>
       <div className="nav-profile-body">
         <Menu>
           {menuItem.map((el, i) => {
             return (
               <Menu.Item key={i}>
-                <a href={el.path}>
                   <Icon className="mr-3" type={el.icon} />
                   <span className="font-weight-normal">{el.title}</span>
-                </a>
               </Menu.Item>
             );
           })}
@@ -71,7 +66,7 @@ export const NavProfile = () => {
     <Dropdown placement="bottomRight" overlay={profileMenu} trigger={["click"]}>
       <Menu className="d-flex align-item-center" mode="horizontal">
         <Menu.Item key="profile">
-          <Avatar src={AvatarImg} />
+          <Avatar size={45} src={AvatarImg} />
         </Menu.Item>
       </Menu>
     </Dropdown>

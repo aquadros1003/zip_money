@@ -13,7 +13,6 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, validators=[EmailValidator()])
     username = models.CharField(
         max_length=255,
-        unique=True,
         validators=[MinValueValidator(8), MaxValueValidator(30)],
     )
     password = models.CharField(
@@ -26,7 +25,7 @@ class User(AbstractUser):
     )
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username"]
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.email

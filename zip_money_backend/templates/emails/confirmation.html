@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Potwierdzenie rejestracji</title>
-  </head>
-  <body>
-    <h1>Potwierdzenie rejestracji</h1>
-    <p>
-      Dziękujemy za rejestrację na naszym serwisie. Wiadomość potwierdzająca
-      została wysłana na Twój adres e-mail.
-    </p>
-  </body>
-</html>
+{% autoescape off %}
+Hi ,
+Please click on the link to confirm your registration,
+http://{{ domain }}/activate/{{ uid }}/{{ token }}
+
+{% endautoescape %}

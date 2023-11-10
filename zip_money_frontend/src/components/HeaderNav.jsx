@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Layout } from "antd";
+import { Avatar, Layout } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import NavProfile from "./NavProfile";
 import NavPanel from "../components/NavPanel";
@@ -8,12 +8,11 @@ import Logo from "../assets/logo.png";
 
 const { Header } = Layout;
 
-export const HeaderNav = () => {
+export const HeaderNav = (props) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isNavTop, setIsNavTop] = useState(false);
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [headerNavColor, setHeaderNavColor] = useState("rgb(255, 255, 255)");
-  const [direction, setDirection] = useState("ltr");
 
   useEffect(() => {
     const updateWidth = () => {
@@ -70,11 +69,8 @@ export const HeaderNav = () => {
             )}
           </div>
         )}
-        <a className="header-brand" href="/" title="ZipMoney">
-          <img src={Logo} alt="ZipMoney" height={60} />
-        </a>
+        <Avatar src={Logo} alt="ZipMoney" size={80} />
         <div className="ml-auto d-flex header-right-icons header-search-icon">
-          <NavPanel direction={direction} />
           <NavProfile />
         </div>
       </div>

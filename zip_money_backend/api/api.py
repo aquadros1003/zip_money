@@ -6,10 +6,13 @@ from graphene_django.filter import DjangoFilterConnectionField
 
 
 class Query(graphene.ObjectType):
-    users = DjangoFilterConnectionField(UserNode)
+    me = graphene.Field(UserNode)
 
-    def resolve_users(self, info, **kwargs):
-        return get_user_model().objects.all()
+    def resolve_me(self, info):
+        user = info.context.user
+        if user.is_anonymous:
+            return None
+        return user
 
 
 class Mutation(UserMutation, graphene.ObjectType):

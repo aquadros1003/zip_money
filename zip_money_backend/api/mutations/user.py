@@ -25,8 +25,8 @@ class SignUp(graphene.Mutation):
 
 
 class SignIn(graphene.Mutation):
-    token = graphene.String()
     user = graphene.Field(UserNode)
+    token = graphene.String()
 
     class Arguments:
         email = graphene.String(required=True)
@@ -34,10 +34,20 @@ class SignIn(graphene.Mutation):
 
     def mutate(self, info, email, password):
         user_service = UserService()
-        user, token = user_service.login(email, password)
+        user, token = user_service.login(info, email, password)
         return SignIn(user=user, token=token)
+
+
+class SignOut(graphene.Mutation):
+    success = graphene.Boolean()
+
+    def mutate(self, info):
+        user_service = UserService()
+        success = user_service.logout(info)
+        return SignOut(success=success)
 
 
 class UserMutation(graphene.ObjectType):
     sign_in = SignIn.Field()
     sing_up = SignUp.Field()
+    sign_out = SignOut.Field()

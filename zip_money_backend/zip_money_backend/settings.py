@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
     "graphene_django",
     "corsheaders",
     "users",
+    "transactions",
 ]
 
 MIDDLEWARE = [
@@ -74,10 +76,16 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-CORS_ORIGIN_WHITELIST = (
-    "http://localhost:3000",  
-)
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ["*"]
+CSRF_COOKIE_SECURE = True
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
+]
 
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
 CORS_ALLOW_CREDENTIALS = True
 
 GRAPHQL_JWT = {
@@ -88,7 +96,7 @@ GRAPHQL_JWT = {
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates/"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -152,8 +160,8 @@ USE_TZ = True
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "mailhog"  # Host, na którym działa MailHog
-EMAIL_PORT = 1025  # Port, na którym działa MailHog
+EMAIL_HOST = "mailhog"  
+EMAIL_PORT = 1025
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = False
 EMAIL_USE_LOCALTIME = True
