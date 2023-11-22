@@ -1,9 +1,9 @@
 import graphene
+from api.schema.transactions import TransactionNode
 from django.contrib.auth import get_user_model
 from graphene_django import DjangoObjectType
-from transactions.models import Transaction
 from graphene_django.filter import DjangoFilterConnectionField
-from api.schema.transactions import TransactionNode
+from transactions.models import Transaction
 
 
 class UserNode(DjangoObjectType):
@@ -21,4 +21,4 @@ class UserNode(DjangoObjectType):
     )
 
     def resolve_transactions(self, info, **kwargs):
-        return Transaction.objects.filter(user=self)
+        return Transaction.objects.filter(user=self).order_by("-date")

@@ -2,12 +2,12 @@ import React from "react";
 import { Button, Form, Input, Divider, Alert, message } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { GoogleSVG, FacebookSVG } from "../assets/icon";
-import CustomIcon from "./CustomIcon";
 import { motion } from "framer-motion";
 import SIGN_IN from "../api/mutations/SignIn";
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import SOCIAL_AUTH from "../api/mutations/SocialAuth";
 
 export const LoginForm = (props) => {
   const { otherSignIn, showForgetPassword, onForgetPasswordClick, extra } =
@@ -19,17 +19,20 @@ export const LoginForm = (props) => {
     },
   });
 
+  const [SocialAuth,] = useMutation(SOCIAL_AUTH, {
+    onCompleted: () => {
+      navigate("/dashboard", { replace: true });
+    }
+  });
+
+
   const initialCredential = {
-    email: "admin@admin.pl",
-    password: "admin",
+    email: "presentation@dev.pl",
+    password: "Polak!23",
   };
 
   const message = error ? error.message : data ? "Login Successfull" : "";
   const showMessage = error || data ? true : false;
-
-  const onGoogleLogin = () => {};
-
-  const onFacebookLogin = () => {};
 
   const renderOtherSignIn = (
     <div>
@@ -39,21 +42,13 @@ export const LoginForm = (props) => {
         </span>
       </Divider>
       <div className="d-flex justify-content-center">
-        <Button
-          onClick={() => onGoogleLogin()}
-          className="mr-2"
-          disabled={loading}
-          icon={<CustomIcon svg={GoogleSVG} />}
-        >
-          Google
-        </Button>
-        <Button
-          onClick={() => onFacebookLogin()}
-          icon={<CustomIcon svg={FacebookSVG} />}
-          disabled={loading}
-        >
-          Facebook
-        </Button>
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            SocialAuth({
+              variables: {clientId: credentialResponse.clientId, credentials: credentialResponse.credential},
+            });
+          }}
+        />
       </div>
     </div>
   );

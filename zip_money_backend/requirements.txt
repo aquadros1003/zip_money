@@ -9,3 +9,5 @@ flake8
 isort
 mypy
 django-cors-headers
+graphene-file-upload
+django-graphql-social-auth

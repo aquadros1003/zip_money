@@ -1,7 +1,8 @@
 import graphene
-from graphql_jwt import mutations
-from users.services.user import UserService
+import graphql_jwt
 from api.schema.user import UserNode
+from graphene_file_upload.scalars import Upload
+from users.services.user import UserService
 
 
 class SignUp(graphene.Mutation):
@@ -47,7 +48,22 @@ class SignOut(graphene.Mutation):
         return SignOut(success=success)
 
 
+class SocialAuth(graphene.Mutation):
+    user = graphene.Field(UserNode)
+
+    class Arguments:
+        client_id = graphene.String()
+        credentials = graphene.String()
+
+    def mutate(self, info, client_id, credentials):
+        user_service = UserService()
+        user = user_service.social_auth(info, client_id, credentials)
+        return SocialAuth(user=user)
+
+
 class UserMutation(graphene.ObjectType):
     sign_in = SignIn.Field()
     sing_up = SignUp.Field()
     sign_out = SignOut.Field()
+    social_auth = SocialAuth.Field()
+    refresh_token = graphql_jwt.Refresh.Field()

@@ -68,6 +68,10 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = (
+    "1001451999192-dujckipt0v8f3g7lm2peuufa2d51j0ch.apps.googleusercontent.com"
+)
+
 AUTH_USER_MODEL = "users.User"
 
 ROOT_URLCONF = "zip_money_backend.urls"
@@ -160,7 +164,7 @@ USE_TZ = True
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "mailhog"  
+EMAIL_HOST = "mailhog"
 EMAIL_PORT = 1025
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = False

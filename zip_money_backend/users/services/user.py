@@ -1,15 +1,14 @@
-import stat
+import jwt
 from django.conf import settings
-from django.contrib.auth import get_user_model
-from users.models import User
-from django.core.mail import send_mail
-from graphql_jwt.shortcuts import get_token, create_refresh_token
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.http import urlsafe_base64_encode
-from django.template.loader import render_to_string
+from django.core.mail import send_mail
 from django.template import engines
 from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from graphql_jwt.shortcuts import create_refresh_token, get_token
+from users.models import User
+
 from zip_money_backend.settings import BASE_DIR
 
 
@@ -46,6 +45,30 @@ class UserService:
             info.context.jwt_refresh_token = create_refresh_token(user)
             return user, token
         raise Exception("Invalid credentials")
+
+    def social_auth(self, info, client_id: str, credentials: str) -> None:
+        if client_id != settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY:
+            raise Exception("Invalid client id")
+        user_info = jwt.decode(
+            credentials, options={"verify_signature": False}
+        )
+        if (
+            user := get_user_model()
+            .objects.filter(email=user_info["email"])
+            .first()
+        ):
+            info.context.jwt_token = get_token(user)
+            info.context.jwt_refresh_token = create_refresh_token(user)
+            return user
+        user = get_user_model()(
+            email=user_info["email"],
+            first_name=user_info["given_name"],
+            last_name=user_info["family_name"],
+        )
+        user.save()
+        info.context.jwt_token = get_token(user)
+        info.context.jwt_refresh_token = create_refresh_token(user)
+        return user
 
     def logout(self, info) -> bool:
         if info.context.user.is_anonymous:

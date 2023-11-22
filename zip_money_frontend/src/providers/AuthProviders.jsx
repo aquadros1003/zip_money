@@ -1,33 +1,10 @@
-import { createContext, useContext, useState } from "react";
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider as ApolloHooksProvider,
   createHttpLink,
 } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
-
-const AuthContext = createContext();
-
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-
-  const login = (userData) => {
-    setUser(userData);
-  };
-
-  const logout = () => {
-    setUser(null);
-  };
-
-  return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-export const useAuth = () => useContext(AuthContext);
+import REFRESH_TOKEN from "../api/mutations/RefreshToken";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:8000/graphql",
@@ -39,7 +16,14 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+client.mutate({
+  mutation: REFRESH_TOKEN,
+});
+
 const ApolloProvider = ({ children }) => {
+  client.mutate({
+    mutation: REFRESH_TOKEN,
+  });
   return <ApolloHooksProvider client={client}>{children}</ApolloHooksProvider>;
 };
 

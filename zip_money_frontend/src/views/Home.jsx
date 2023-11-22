@@ -7,12 +7,9 @@ import Footer from "../components/Footer";
 import AboutUs from "../layouts/AboutUs";
 
 const Home = () => {
-  const scrollToSection = (ref) => {
-    ref.current.scrollIntoView({ behavior: "smooth" });
-  };
   return (
     <>
-      <Navigation scrollToSection={scrollToSection} />
+      <Navigation />
       <Hero />
       <Features />
       <AboutUs />

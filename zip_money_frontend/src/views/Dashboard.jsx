@@ -1,14 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderNav from "../components/HeaderNav";
 import ME from "../api/queries/Me";
 import { useQuery } from "@apollo/client";
-import {
-  VisitorChartData,
-  AnnualStatisticData,
-  ActiveMembersData,
-  NewMembersData,
-  RecentTransactionData,
-} from "../api/MockedData";
 import {
   Row,
   Col,
@@ -113,9 +106,11 @@ const tableColumns = [
 ];
 
 const Dashboard = () => {
-  const { loading, data } = useQuery(GET_TRANSACTIONS);
-  console.log(data?.me?.transactions?.edges);
-  const recentTransactionData = data?.me?.transactions?.edges?.map((item) => ({
+  const { loading, data } = useQuery(GET_TRANSACTIONS, {
+    fetchPolicy: "cache-and-network",
+  });
+
+  const tableData = data?.me?.transactions?.edges.map((item) => ({
     amount: `${item.node.currency.symbol}` + " " + `${item.node.amount}`,
     currency: `${item.node.currency.symbol}`,
     name: `${item.node.category.name}`,
@@ -125,24 +120,25 @@ const Dashboard = () => {
 
   return (
     <>
-      <HeaderNav />
-      <div className="container-fluid px-xl-5 mt-5">
-        <Col span={24}>
-          <Card
-            title="Latest Transactions"
-            extra={cardDropdown(latestTransactionOption)}
-          >
-            {loading && <Spin size="large" />}
-            <Table
-              className="no-border-last"
-              columns={tableColumns}
-              dataSource={recentTransactionData}
-              rowKey="id"
-              pagination={false}
-            />
-          </Card>
-        </Col>
-      </div>
+      <Col span={24}>
+        {loading && <div className="text-center mt-5"><Spin /></div>}
+        <div>
+          <Col span={24}>
+            <Card
+              title="Latest Transactions"
+              extra={cardDropdown(latestTransactionOption)}
+            >
+              <Table
+                className="no-border-last"
+                columns={tableColumns}
+                dataSource={tableData}
+                rowKey="id"
+                pagination={false}
+              />
+            </Card>
+          </Col>
+        </div>
+      </Col>
     </>
   );
 };

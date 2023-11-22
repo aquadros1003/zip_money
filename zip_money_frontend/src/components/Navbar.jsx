@@ -7,7 +7,7 @@ function Navigation() {
   return (
     <Navbar bg="light" variant="light" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <a>
             <img
               className="img-fluid"

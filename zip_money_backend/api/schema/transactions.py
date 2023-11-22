@@ -1,8 +1,10 @@
 from unicodedata import category
+
 import graphene
-from transactions.models import Transaction, Category, Currency
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
+from transactions.models import Category, Currency, Transaction
+
 
 class CategoryNode(DjangoObjectType):
     class Meta:
@@ -12,6 +14,7 @@ class CategoryNode(DjangoObjectType):
             "name": ["exact", "icontains", "istartswith"],
         }
 
+
 class CurrencyNode(DjangoObjectType):
     class Meta:
         model = Currency
@@ -19,6 +22,7 @@ class CurrencyNode(DjangoObjectType):
         filter_fields = {
             "name": ["exact", "icontains", "istartswith"],
         }
+
 
 class TransactionNode(DjangoObjectType):
     class Meta:
@@ -30,4 +34,3 @@ class TransactionNode(DjangoObjectType):
 
     category = graphene.Field(CategoryNode)
     currency = graphene.Field(CurrencyNode)
-

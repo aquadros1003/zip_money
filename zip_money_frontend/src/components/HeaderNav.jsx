@@ -60,16 +60,19 @@ export const HeaderNav = (props) => {
       }}
     >
       <div className="d-flex">
-        {isMobile && (
-          <div className="d-block d-lg-none pointer mr-3" onClick={onToggle}>
-            {navCollapsed ? (
-              <MenuUnfoldOutlined className="nav-icon" />
-            ) : (
-              <MenuFoldOutlined className="nav-icon" />
-            )}
+        {!isMobile && (
+          <div className="app-header-logo-mobile">
+            <a href="/#">
+              <img
+                src={Logo}
+                alt="Zip Money"
+                width={50}
+                height={50}
+                className="mr-2"
+              />
+            </a> <span className="font-weight-bold" style={{fontSize: "18px"}}>Zip Money</span>
           </div>
         )}
-        <Avatar src={Logo} alt="ZipMoney" size={80} />
         <div className="ml-auto d-flex header-right-icons header-search-icon">
           <NavProfile />
         </div>
