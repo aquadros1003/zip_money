@@ -34,3 +34,22 @@ class TransactionNode(DjangoObjectType):
 
     category = graphene.Field(CategoryNode)
     currency = graphene.Field(CurrencyNode)
+
+
+class DailyTransactionNode(graphene.ObjectType):
+    day_date = graphene.String()
+    amount = graphene.Float()
+
+    class Meta:
+        interfaces = (graphene.relay.Node,)
+
+    def from_amount_and_date(cls, date, amount):
+        return cls(
+            day_date=date,
+            amount=amount,
+        )
+
+
+class DailyTransactionConnection(graphene.relay.Connection):
+    class Meta:
+        node = DailyTransactionNode

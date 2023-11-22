@@ -78,18 +78,19 @@ const ChartWidget = ({
 
   const extraRef = useRef(null);
   const chartRef = useRef();
-
-  options.xaxis.categories = xAxis;
-  if (customOptions) {
-    options = { ...options, ...customOptions };
-  }
-
+  console.log(xAxis)
+  options = { ...options, ...customOptions };
+  
   const onResize = () => {
     setTimeout(() => {
       setLegendOffset();
     }, 600);
   };
+  options.xaxis.categories = xAxis;
 
+  console.log(options.xaxis.categories)
+
+  // render chart when series or options changed
   const renderChart = () => (
     <ReactResizeDetector onResize={onResize()}>
       <div
@@ -126,7 +127,7 @@ const ChartWidget = ({
                 {extra}
               </div>
             )}
-            {renderChart()}
+            {xAxis && xAxis.length > 0 && renderChart()}
           </div>
         </Card>
       ) : (
