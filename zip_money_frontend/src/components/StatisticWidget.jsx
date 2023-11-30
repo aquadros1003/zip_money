@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const StatisticWidget = ({ title, value }) => {
 	return (
-		<Card className="card-box mb-4">
+		<Card className="card-box mb-4 p-5">
 			{title && <h4 className="mb-2">{title}</h4>}
 				<div>
 					<div className="d-flex align-items-center">

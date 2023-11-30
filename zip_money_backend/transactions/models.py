@@ -25,6 +25,9 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(auto_now_add=True)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
+    budget = models.ForeignKey(
+        "budget.Budget", on_delete=models.CASCADE, blank=True, null=True
+    )
 
     def __str__(self):
         return self.user.email + " - " + self.category.name

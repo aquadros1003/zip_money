@@ -1,12 +1,12 @@
+import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider as ApolloHooksProvider,
-  createHttpLink,
 } from "@apollo/client";
 import REFRESH_TOKEN from "../api/mutations/RefreshToken";
 
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
   uri: "http://localhost:8000/graphql",
   credentials: "include",
 });

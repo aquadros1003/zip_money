@@ -11,6 +11,7 @@ import ApolloProvider from "./providers/AuthProviders";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import AppLayout from "./layouts/AppLayout";
 import Budget from "./views/Budget";
+import UpdateProfile from "./views/UpdateProfile";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/dashboard" element={<AppLayout />}>
               <Route path="/dashboard/" element={<Dashboard />} />
               <Route path="/dashboard/budget" element={<Budget />} />
+              <Route path="/dashboard/update-profile" element={<UpdateProfile />} />
             </Route>
           </Routes>
         </Router>

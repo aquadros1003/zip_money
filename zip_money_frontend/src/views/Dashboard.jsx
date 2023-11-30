@@ -34,6 +34,7 @@ import {
 import GET_TRANSACTIONS from "../api/queries/GetTransactions";
 import GET_EXPENSES from "../api/queries/GetMonthlyExpenses";
 import GET_MONTHLY_CHART_DATA from "../api/queries/GetMonthlyChartData";
+import GET_PINNED_BUDGET from "../api/queries/GetPinnedBudget";
 import { Spin } from "antd";
 
 const cardDropdown = (menu) => (
@@ -116,9 +117,19 @@ const Dashboard = () => {
   const { data: data2 } = useQuery(GET_EXPENSES, {
     fetchPolicy: "cache-and-network",
   });
-  const { data: chartData, loading: chartLoading } = useQuery(GET_MONTHLY_CHART_DATA, {
-    fetchPolicy: "cache-and-network",
-  });
+  const { data: chartData, loading: chartLoading } = useQuery(
+    GET_MONTHLY_CHART_DATA,
+    {
+      fetchPolicy: "cache-and-network",
+    }
+  );
+
+  const { data: pinnedBudgetData, loading: pinnedBudgetLoading } = useQuery(
+    GET_PINNED_BUDGET,
+    {
+      fetchPolicy: "cache-and-network",
+    }
+  );
 
   const tableData = data?.me?.transactions?.edges.map((item) => ({
     amount: `${item.node.currency.symbol}` + " " + `${item.node.amount}`,
@@ -133,9 +144,7 @@ const Dashboard = () => {
       const chartDataArray = chartData?.me?.monthlyTransactions?.edges.map(
         (item) => item.node
       );
-      // categories without index
       const categories = chartDataArray.map((item) => item.dayDate);
-      // series without index
       const series = chartDataArray.map((item) => item.amount);
       setVisitorChartData({
         series: [
@@ -159,39 +168,48 @@ const Dashboard = () => {
         )}
         <div>
           <Row gutter={16}>
-            <Col xs={24} sm={24} md={24} lg={24} xl={8}>
+            <Col xs={24} sm={24} md={24} lg={24} xl={10}>
               <StatisticWidget
                 title={"Monthly Expenses"}
                 value={"$" + " " + data2?.me?.monthlyExpenses?.toFixed(2)}
               />
             </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={8}>
+            <Col xs={24} sm={24} md={24} lg={24} xl={10}>
               <StatisticWidget
                 title={"Daily Expenses"}
                 value={"$" + " " + data2?.me?.dailyExpenses?.toFixed(2)}
               />
             </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={8}>
-              <StatisticWidget
-                title={"Monthly Savings"}
-                value={"$" + " " + "0.00"}
+            <Col xs={20} sm={20} md={20} lg={20} xl={4}>
+              <GoalWidget
+                value={
+                  pinnedBudgetData?.me?.pinnedBudget?.budget
+                    ?.spentRemainingPercentage
+                }
+                subtitle={
+                  pinnedBudgetData?.me?.pinnedBudget?.budget?.remainingBudget?.toFixed(
+                    2
+                  ) +
+                  "/" +
+                  pinnedBudgetData?.me?.pinnedBudget?.budget?.budget
+                }
               />
             </Col>
           </Row>
           <Col span={24}>
             {chartLoading && (
-            <div className="text-center mt-5">
-              <Spin />
-            </div>
-          )}
-              <ChartWidget
-                series={visitorChartData?.series}
-                xAxis={visitorChartData?.categories}
-                type="area"
-                height={300}
-                width="100%"
-                customOptions={apexLineChartDefaultOption}
-              />
+              <div className="text-center mt-5">
+                <Spin />
+              </div>
+            )}
+            <ChartWidget
+              series={visitorChartData?.series}
+              xAxis={visitorChartData?.categories}
+              type="area"
+              height={300}
+              width="100%"
+              customOptions={apexLineChartDefaultOption}
+            />
           </Col>
           <Col span={24} className="mt-4">
             <Card

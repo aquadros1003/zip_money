@@ -78,7 +78,6 @@ const ChartWidget = ({
 
   const extraRef = useRef(null);
   const chartRef = useRef();
-  console.log(xAxis)
   options = { ...options, ...customOptions };
   
   const onResize = () => {
@@ -87,8 +86,6 @@ const ChartWidget = ({
     }, 600);
   };
   options.xaxis.categories = xAxis;
-
-  console.log(options.xaxis.categories)
 
   // render chart when series or options changed
   const renderChart = () => (

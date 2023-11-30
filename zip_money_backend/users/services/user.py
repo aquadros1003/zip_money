@@ -1,3 +1,4 @@
+from distutils.command import upload
 import jwt
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
@@ -10,6 +11,8 @@ from graphql_jwt.shortcuts import create_refresh_token, get_token
 from users.models import User
 
 from zip_money_backend.settings import BASE_DIR
+import datetime as dt
+from graphene_file_upload.scalars import Upload
 
 
 class UserService:
@@ -95,3 +98,38 @@ class UserService:
             user.email,
         ]
         send_mail(subject, message, email_from, recipient_list)
+
+    def update_profile(
+        self,
+        info,
+        first_name: str,
+        last_name: str,
+        phone_number: str,
+        description: str,
+        date_of_birth: dt.datetime,
+        # gender: str,
+        facebook_url: str,
+        instagram_url: str,
+        twitter_url: str,
+    ) -> User:
+        if not info.context.user.is_anonymous:
+            user = info.context.user
+            user.first_name = first_name
+            user.last_name = last_name
+            user.phone_number = phone_number
+            user.description = description
+            user.date_of_birth = date_of_birth
+            user.facebook_url = facebook_url
+            user.instagram_url = instagram_url
+            user.twitter_url = twitter_url
+            user.save()
+            return user
+        raise Exception("User is not logged in")
+
+    def update_avatar(self, info, avatar: Upload) -> User:
+        if not info.context.user.is_anonymous:
+            user = info.context.user
+            user.avatar = avatar
+            user.save()
+            return user
+        raise Exception("User is not logged in")

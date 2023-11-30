@@ -1,8 +1,5 @@
-from unicodedata import category
-
 import graphene
 from graphene_django import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
 from transactions.models import Category, Currency, Transaction
 
 
