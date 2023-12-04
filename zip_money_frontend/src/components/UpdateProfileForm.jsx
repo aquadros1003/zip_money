@@ -20,6 +20,7 @@ import UPDATE_PROFILE from "../api/mutations/UpdateProfile";
 import { useMutation } from "@apollo/client";
 import UPDATE_AVATAR from "../api/mutations/UpdateAvatar";
 import { useState } from "react";
+import { toast, Toaster } from "react-hot-toast";
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -31,8 +32,27 @@ export const UpdateProfileForm = () => {
   const { loading, data } = useQuery(ME, {
     fetchPolicy: "cache-and-network",
   });
-  const [UpdateProfile, { loading: updateProfileLoading }] =
-    useMutation(UPDATE_PROFILE);
+  const [UpdateProfile, { loading: updateProfileLoading }] = useMutation(
+    UPDATE_PROFILE,
+    {
+      onCompleted: () => {
+        toast.success("Profile updated successfully", {
+          duration: 4000,
+          position: "bottom-right",
+          style: {
+            border: "1px solid #fff",
+            padding: "20px",
+            fontSize: "1rem",
+          },
+          iconTheme: {
+            primary: "#fff",
+            secondary: "#0000ff",
+          },
+        });
+      },
+    }
+  );
+
   const [UpdateAvatar] = useMutation(UPDATE_AVATAR);
   const user = data?.me;
   const shouldRenderForm = user !== null && user !== undefined && !loading;
@@ -67,9 +87,10 @@ export const UpdateProfileForm = () => {
     }
   };
 
-  console.log(file);
-
   const onClickUpdateAvatar = async () => {
+    if (!file) {
+      return;
+    }
     try {
       await UpdateAvatar({
         variables: {
@@ -77,7 +98,7 @@ export const UpdateProfileForm = () => {
         },
       });
     } catch (error) {
-      console.log(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -98,8 +119,14 @@ export const UpdateProfileForm = () => {
         }}
       >
         <Row gutter={16}>
+          <div>
+            <Toaster
+              position="bottom-right"
+              reverseOrder={false}
+              iconTheme={{ primary: "#000", secondary: "#fff" }}
+            />
+          </div>
           <Col xs={24} sm={24} md={24} lg={20} xl={8}>
-            {/* <Alert type="error" showIcon message={message}></Alert> */}
             <Row gutter={16} className="avatar">
               <Upload
                 // previewFile={() => previewUrl || "http://localhost:8000/" + user?.avatar}
@@ -110,11 +137,7 @@ export const UpdateProfileForm = () => {
                 }}
               >
                 {previewUrl ? (
-                  <Avatar
-                    src={previewUrl}
-                    alt="avatar"
-                    size={270}
-                  />
+                  <Avatar src={previewUrl} alt="avatar" size={270} />
                 ) : (
                   <Avatar
                     src={"http://localhost:8000/" + user?.avatar}

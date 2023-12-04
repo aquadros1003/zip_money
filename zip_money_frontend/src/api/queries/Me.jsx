@@ -6,6 +6,7 @@ const ME = gql`
       firstName
       lastName
       email
+      avatar
     }
   }
 `;

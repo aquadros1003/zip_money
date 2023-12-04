@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { Avatar, Layout } from "antd";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import {Layout } from "antd";
 import NavProfile from "./NavProfile";
-import NavPanel from "../components/NavPanel";
 import Logo from "../assets/logo.png";
 
 const { Header } = Layout;

@@ -10,7 +10,6 @@ export const GoalWidget = ({
   strokeWidth,
   extra,
 }) => {
-  console.log("GoalWidget", title, value, size, subtitle, strokeWidth, extra);
   return (
     <Card className="mb-4">
       <div className="text-center">
@@ -32,14 +31,6 @@ export const GoalWidget = ({
       </div>
     </Card>
   );
-};
-
-GoalWidget.propTypes = {
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  value: PropTypes.number,
-  size: PropTypes.number,
-  subtitle: PropTypes.string,
-  extra: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
 GoalWidget.defaultProps = {

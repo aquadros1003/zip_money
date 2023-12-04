@@ -3,8 +3,6 @@ import { Menu, Dropdown, Avatar } from "antd";
 import {
   EditOutlined,
   SettingOutlined,
-  ShopOutlined,
-  QuestionCircleOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
 import Icon from "../components/Icon";
@@ -14,6 +12,8 @@ import SIGN_OUT from "../api/mutations/SignOut";
 import { useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 import { Link } from "react-router-dom";
+import ME from "../api/queries/Me";
+import { useQuery } from "@apollo/client";
 
 const menuItem = [
   {
@@ -31,7 +31,9 @@ const menuItem = [
 
 export const NavProfile = () => {
   const navigate = useNavigate();
-  const [SignOut, { data, loading, error }] = useMutation(SIGN_OUT);
+  const [SignOut, { loading }] = useMutation(SIGN_OUT);
+
+  const { data, refetch } = useQuery(ME);
 
   const handleSignOut = () => {
     SignOut();
@@ -74,7 +76,7 @@ export const NavProfile = () => {
     <Dropdown placement="bottomRight" overlay={profileMenu} trigger={["click"]}>
       <Menu className="d-flex align-item-center" mode="horizontal">
         <Menu.Item key="profile">
-          <Avatar size={45} src={AvatarImg} />
+          <Avatar size={45} src={"http://localhost:8000/" + data?.me?.avatar} />
         </Menu.Item>
       </Menu>
     </Dropdown>

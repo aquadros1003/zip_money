@@ -8,10 +8,22 @@ import {
 } from "@ant-design/icons";
 import { Outlet } from "react-router-dom";
 import { Layout, theme } from "antd";
+import { useQuery } from "@apollo/client";
+import ME from "../api/queries/Me";
+import { useNavigate } from "react-router-dom";
 
 const { Header, Content, Sider } = Layout;
 
 export const AppLayout = () => {
+  const navigate = useNavigate();
+  const { data, refetch } = useQuery(ME);
+  if (data?.me === undefined) {
+    navigate("/login");
+  }
+
+
+  console.log(data?.me);
+
   return (
     <Layout>
       <Header
