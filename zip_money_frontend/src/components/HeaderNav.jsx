@@ -59,7 +59,7 @@ export const HeaderNav = (props) => {
       <div className="d-flex">
         {!isMobile && (
           <div className="app-header-logo-mobile">
-            <a href="/#">
+            <a>
               <img
                 src={Logo}
                 alt="Zip Money"

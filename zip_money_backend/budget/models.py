@@ -1,14 +1,15 @@
 from django.db import models
 from users.models import User
 from transactions.models import Currency, Transaction
+from django.utils import timezone
 
 
 class Budget(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255, blank=True, null=True)
-    budget = models.DecimalField(max_digits=10, decimal_places=2)
+    budget = models.FloatField(default=0)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-    start_date = models.DateField()
+    start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateField()
 
     def __str__(self):
@@ -23,6 +24,14 @@ class Budget(models.Model):
             total_spent += transaction.amount
         return total_spent
 
+    @property
+    def owner(self):
+        return (
+            BudgetAssignedUser.objects.filter(budget=self, is_owner=True)
+            .first()
+            .user
+        )
+
 
 class BudgetAssignedUser(models.Model):
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
@@ -32,3 +41,10 @@ class BudgetAssignedUser(models.Model):
 
     def __str__(self):
         return self.budget.name + " " + self.user.email
+
+    def pin_budget(self):
+        for budget in BudgetAssignedUser.objects.filter(user=self.user):
+            budget.is_pined = False
+            budget.save()
+        self.is_pined = True
+        self.save()

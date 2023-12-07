@@ -129,7 +129,6 @@ export const UpdateProfileForm = () => {
           <Col xs={24} sm={24} md={24} lg={20} xl={8}>
             <Row gutter={16} className="avatar">
               <Upload
-                // previewFile={() => previewUrl || "http://localhost:8000/" + user?.avatar}
                 showUploadList={false}
                 onChange={handleAvatarChange}
                 customRequest={async ({ onSuccess }) => {

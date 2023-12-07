@@ -13,12 +13,17 @@ class BudgetNode(DjangoObjectType):
 
     remaining_budget = graphene.Float()
     spent_remaining_percentage = graphene.Int()
+    owner = graphene.Field("api.schema.user.UserNode")
 
     def resolve_remaining_budget(self, info, **kwargs):
         return self.budget - self.get_total_spent()
 
     def resolve_spent_remaining_percentage(self, info, **kwargs):
         return (self.budget - self.get_total_spent()) / self.budget * 100
+
+    def resolve_owner(self, info, **kwargs):
+        return self.owner
+
 
 class BudgetAssignedUserNode(DjangoObjectType):
     class Meta:

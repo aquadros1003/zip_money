@@ -18,7 +18,13 @@ class UserNode(DjangoObjectType):
     class Meta:
         model = get_user_model()
         interfaces = (graphene.relay.Node,)
-        exclude = ("password", "is_superuser", "is_staff", "groups", "user_permissions")
+        exclude = (
+            "password",
+            "is_superuser",
+            "is_staff",
+            "groups",
+            "user_permissions",
+        )
         filter_fields = {
             "username": ["exact", "icontains", "istartswith"],
             "email": ["exact", "icontains"],
@@ -31,6 +37,9 @@ class UserNode(DjangoObjectType):
     monthly_expenses = graphene.Float()
     monthly_transactions = relay.ConnectionField(DailyTransactionConnection)
     pinned_budget = graphene.Field(BudgetAssignedUserNode)
+    budgets = DjangoFilterConnectionField(
+        BudgetAssignedUserNode, filterset_class=None
+    )
 
     def resolve_transactions(self, info, **kwargs):
         return Transaction.objects.filter(user=self).order_by("-date")
@@ -71,10 +80,14 @@ class UserNode(DjangoObjectType):
                     amount=sum([t.amount for t in daily_transactions]),
                 )
             )
-            print(daily_amounts)
         return daily_amounts
 
     def resolve_pinned_budget(self, info, **kwargs):
         return BudgetAssignedUser.objects.filter(
             user=self, is_pined=True
         ).first()
+
+    def resolve_budgets(self, info, **kwargs):
+        return BudgetAssignedUser.objects.filter(user=self).order_by(
+            "-is_pined"
+        )
