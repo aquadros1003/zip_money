@@ -69,7 +69,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get.get(
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get(
     "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", ""
 )
 
