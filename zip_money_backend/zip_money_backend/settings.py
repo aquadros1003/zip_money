@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "graphene_django",
     "corsheaders",
     "users",
-    'budget',
+    "budget",
     "transactions",
 ]
 
@@ -69,8 +69,8 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = (
-    "1001451999192-dujckipt0v8f3g7lm2peuufa2d51j0ch.apps.googleusercontent.com"
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get.get(
+    "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", ""
 )
 
 AUTH_USER_MODEL = "users.User"
