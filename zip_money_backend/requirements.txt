@@ -12,3 +12,5 @@ django-cors-headers
 graphene-file-upload
 django-graphql-social-auth
 Pillow
+gunicorn
+dj-database-url

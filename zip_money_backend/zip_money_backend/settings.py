@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,9 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-1^&iknife0q&f*lr61cto@pi6b@e523j!q7emqgs5_9-^*t54)"
-)
+SECRET_KEY = "django-insecure-1^&iknife0q&f*lr61cto@pi6b@e523j!q7emqgs5_9-^*t54)"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -69,9 +68,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get(
-    "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", ""
-)
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", "")
 
 AUTH_USER_MODEL = "users.User"
 
@@ -123,14 +120,9 @@ WSGI_APPLICATION = "zip_money_backend.wsgi.application"
 app_settings: str = os.environ.get("APP_SETTINGS", "Dev")
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("DB_NAME", "zip_money_db"),
-        "USER": os.environ.get("DB_USER", "postgres"),
-        "PASSWORD": os.environ.get("DB_PASS", "postgres"),
-        "HOST": os.environ.get("DB_HOST", "localhost"),
-        "PORT": os.environ.get("DB_PORT", "1238"),
-    }
+    "default": dj_database_url.parse(
+        os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3")
+    )
 }
 
 # Password validation

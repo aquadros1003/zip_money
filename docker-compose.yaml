@@ -19,6 +19,8 @@ services:
   zip_money_frontend:
     build: ./zip_money_frontend
     restart: always
+    env_file:
+      - ./zip_money_frontend/.env
     entrypoint: npm run dev
     ports:
       - "3000:3000"
