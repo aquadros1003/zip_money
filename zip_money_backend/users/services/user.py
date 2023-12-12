@@ -37,7 +37,7 @@ class UserService:
             last_name=last_name,
         )
         user.set_password(password)
-        self._send_confirmation_email(user)
+        # self._send_confirmation_email(user)
         user.save()
         return True
 
@@ -52,14 +52,8 @@ class UserService:
     def social_auth(self, info, client_id: str, credentials: str) -> None:
         if client_id != settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY:
             raise Exception("Invalid client id")
-        user_info = jwt.decode(
-            credentials, options={"verify_signature": False}
-        )
-        if (
-            user := get_user_model()
-            .objects.filter(email=user_info["email"])
-            .first()
-        ):
+        user_info = jwt.decode(credentials, options={"verify_signature": False})
+        if user := get_user_model().objects.filter(email=user_info["email"]).first():
             info.context.jwt_token = get_token(user)
             info.context.jwt_refresh_token = create_refresh_token(user)
             return user
