@@ -21,6 +21,7 @@ import { useMutation } from "@apollo/client";
 import UPDATE_AVATAR from "../api/mutations/UpdateAvatar";
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
+import backendUrl from "../configs/BackendUrl";
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -139,7 +140,7 @@ export const UpdateProfileForm = () => {
                   <Avatar src={previewUrl} alt="avatar" size={270} />
                 ) : (
                   <Avatar
-                    src={"http://localhost:8000/" + user?.avatar}
+                    src={`${backendUrl}${user?.avatar}`}
                     alt="avatar"
                     size={270}
                   />

@@ -27,7 +27,10 @@ function App() {
             <Route path="/dashboard" element={<AppLayout />}>
               <Route path="/dashboard/" element={<Dashboard />} />
               <Route path="/dashboard/budget" element={<Budget />} />
-              <Route path="/dashboard/update-profile" element={<UpdateProfile />} />
+              <Route
+                path="/dashboard/update-profile"
+                element={<UpdateProfile />}
+              />
             </Route>
           </Routes>
         </Router>

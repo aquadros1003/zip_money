@@ -5,9 +5,10 @@ import {
   ApolloProvider as ApolloHooksProvider,
 } from "@apollo/client";
 import REFRESH_TOKEN from "../api/mutations/RefreshToken";
+import backendUrl from "../configs/BackendUrl";
 
 const httpLink = createUploadLink({
-  uri: "http://localhost:8000/graphql",
+  uri: `${backendUrl}graphql`,
   credentials: "include",
 });
 

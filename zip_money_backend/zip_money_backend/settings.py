@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-1^&iknife0q&f*lr61cto@pi6b@e523j!q7emqgs5_9-^*t54)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["http://localhost:3000/*", "localhost"]
+ALLOWED_HOSTS = [f"{os.environ.get('BE_HOST', 'localhost')}"]
 
 # Application definition
 
@@ -75,7 +75,7 @@ AUTH_USER_MODEL = "users.User"
 ROOT_URLCONF = "zip_money_backend.urls"
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    os.environ.get("FE_URL", "http://localhost:3000"),
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -83,7 +83,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 ALLOWED_HOSTS = ["*"]
 CSRF_COOKIE_SECURE = True
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
+    os.environ.get("FE_URL", "http://localhost:3000"),
 ]
 
 SESSION_COOKIE_SAMESITE = "None"
@@ -155,14 +155,14 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "mailhog"
-EMAIL_PORT = 1025
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = False
-EMAIL_USE_LOCALTIME = True
-EMAIL_SUBJECT_PREFIX = "[ZipMoney]"
+if app_settings == "Dev":
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = "mailhog"
+    EMAIL_PORT = 1025
+    EMAIL_USE_TLS = False
+    EMAIL_USE_SSL = False
+    EMAIL_USE_LOCALTIME = True
+    EMAIL_SUBJECT_PREFIX = "[ZipMoney]"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

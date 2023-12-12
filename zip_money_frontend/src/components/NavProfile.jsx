@@ -14,6 +14,7 @@ import { Spin } from "antd";
 import { Link } from "react-router-dom";
 import ME from "../api/queries/Me";
 import { useQuery } from "@apollo/client";
+import backendUrl from "../configs/BackendUrl";
 
 const menuItem = [
   {
@@ -76,7 +77,7 @@ export const NavProfile = () => {
     <Dropdown placement="bottomRight" overlay={profileMenu} trigger={["click"]}>
       <Menu className="d-flex align-item-center" mode="horizontal">
         <Menu.Item key="profile">
-          <Avatar size={45} src={"http://localhost:8000/" + data?.me?.avatar} />
+          <Avatar size={45} src={`${backendUrl}${data?.me?.avatar}`} />
         </Menu.Item>
       </Menu>
     </Dropdown>

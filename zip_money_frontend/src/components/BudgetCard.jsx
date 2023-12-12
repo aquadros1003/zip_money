@@ -4,6 +4,7 @@ import { PushpinOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import PIN_BUDGET from "../api/mutations/PinBudget";
 import { Spin } from "antd";
+import backendUrl from "../configs/BackendUrl";
 
 export const BudgetCard = ({
   title,
@@ -26,7 +27,6 @@ export const BudgetCard = ({
     pinBudget();
   };
 
-  console.log("budgetId", budgetId);
   return (
     <Card className="mb-4">
       <div className="text-center">
@@ -34,7 +34,7 @@ export const BudgetCard = ({
           <div className="float-left">
             <img
               className="rounded-circle"
-              src={"http://localhost:8000/" + avatar}
+              src={`${backendUrl}${avatar}`}
               alt="avatar"
               width={40}
               height={40}
