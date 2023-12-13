@@ -1,17 +1,19 @@
+import datetime
+
 import graphene
-from api.schema.transactions import (
-    TransactionNode,
-    DailyTransactionConnection,
-    DailyTransactionNode,
-)
-from budget.models import BudgetAssignedUser
-from api.schema.budget import BudgetAssignedUserNode
 from django.contrib.auth import get_user_model
+from graphene import relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
+
+from api.schema.budget import BudgetAssignedUserNode
+from api.schema.transactions import (
+    DailyTransactionConnection,
+    DailyTransactionNode,
+    TransactionNode,
+)
+from budget.models import BudgetAssignedUser
 from transactions.models import Transaction
-import datetime
-from graphene import relay
 
 
 class UserNode(DjangoObjectType):
@@ -30,16 +32,12 @@ class UserNode(DjangoObjectType):
             "email": ["exact", "icontains"],
         }
 
-    transactions = DjangoFilterConnectionField(
-        TransactionNode, filterset_class=None
-    )
+    transactions = DjangoFilterConnectionField(TransactionNode, filterset_class=None)
     daily_expenses = graphene.Float()
     monthly_expenses = graphene.Float()
     monthly_transactions = relay.ConnectionField(DailyTransactionConnection)
     pinned_budget = graphene.Field(BudgetAssignedUserNode)
-    budgets = DjangoFilterConnectionField(
-        BudgetAssignedUserNode, filterset_class=None
-    )
+    budgets = DjangoFilterConnectionField(BudgetAssignedUserNode, filterset_class=None)
 
     def resolve_transactions(self, info, **kwargs):
         return Transaction.objects.filter(user=self).order_by("-date")
@@ -58,8 +56,7 @@ class UserNode(DjangoObjectType):
 
     def resolve_monthly_transactions(self, info, **kwargs):
         monthly_days = [
-            datetime.datetime.now() - datetime.timedelta(days=i)
-            for i in range(12)
+            datetime.datetime.now() - datetime.timedelta(days=i) for i in range(12)
         ]
         daily_amounts = []
         for day in monthly_days:
@@ -83,11 +80,7 @@ class UserNode(DjangoObjectType):
         return daily_amounts
 
     def resolve_pinned_budget(self, info, **kwargs):
-        return BudgetAssignedUser.objects.filter(
-            user=self, is_pined=True
-        ).first()
+        return BudgetAssignedUser.objects.filter(user=self, is_pined=True).first()
 
     def resolve_budgets(self, info, **kwargs):
-        return BudgetAssignedUser.objects.filter(user=self).order_by(
-            "-is_pined"
-        )
+        return BudgetAssignedUser.objects.filter(user=self).order_by("-is_pined")

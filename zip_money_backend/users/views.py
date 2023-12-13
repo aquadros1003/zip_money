@@ -12,12 +12,8 @@ def activate(request, uidb64, token):
         print(user)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-    if user is not None and PasswordResetTokenGenerator().check_token(
-        user, token
-    ):
+    if user is not None and PasswordResetTokenGenerator().check_token(user, token):
         user.status.is_verified = True
         user.save()
-        return JsonResponse(
-            {"user": user, "message": "Account activated successfully"}
-        )
+        return JsonResponse({"user": user, "message": "Account activated successfully"})
     return JsonResponse({"message": "Activation link is invalid!"})

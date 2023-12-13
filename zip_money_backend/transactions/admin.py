@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from transactions.models import Category, Currency, Transaction
 
 # Register your models here.

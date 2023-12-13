@@ -1,7 +1,8 @@
 from django.db import models
-from users.models import User
-from transactions.models import Currency, Transaction
 from django.utils import timezone
+
+from transactions.models import Currency, Transaction
+from users.models import User
 
 
 class Budget(models.Model):
@@ -27,9 +28,7 @@ class Budget(models.Model):
     @property
     def owner(self):
         return (
-            BudgetAssignedUser.objects.filter(budget=self, is_owner=True)
-            .first()
-            .user
+            BudgetAssignedUser.objects.filter(budget=self, is_owner=True).first().user
         )
 
 

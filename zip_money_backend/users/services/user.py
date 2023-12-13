@@ -1,4 +1,6 @@
+import datetime as dt
 from distutils.command import upload
+
 import jwt
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
@@ -7,12 +9,11 @@ from django.core.mail import send_mail
 from django.template import engines
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from graphql_jwt.shortcuts import create_refresh_token, get_token
-from users.models import User
-
-from zip_money_backend.settings import BASE_DIR
-import datetime as dt
 from graphene_file_upload.scalars import Upload
+from graphql_jwt.shortcuts import create_refresh_token, get_token
+
+from users.models import User
+from zip_money_backend.settings import BASE_DIR
 
 
 class UserService:

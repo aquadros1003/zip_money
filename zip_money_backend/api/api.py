@@ -1,10 +1,11 @@
 import graphene
-from api.mutations.user import UserMutation
-from api.mutations.budget import BudgetMutation
-from api.schema.user import UserNode
-from api.schema.transactions import CurrencyNode
-from transactions.models import Currency
 from graphene_django.filter import DjangoFilterConnectionField
+
+from api.mutations.budget import BudgetMutation
+from api.mutations.user import UserMutation
+from api.schema.transactions import CurrencyNode
+from api.schema.user import UserNode
+from transactions.models import Currency
 
 
 class Query(graphene.ObjectType):

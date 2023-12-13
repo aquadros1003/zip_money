@@ -1,7 +1,8 @@
 import graphene
 import graphql_jwt
-from api.schema.user import UserNode
 from graphene_file_upload.scalars import Upload
+
+from api.schema.user import UserNode
 from users.services.user import UserService
 
 
@@ -15,9 +16,7 @@ class SignUp(graphene.Mutation):
         password = graphene.String(required=True)
         confirm_password = graphene.String(required=True)
 
-    def mutate(
-        self, info, first_name, last_name, email, password, confirm_password
-    ):
+    def mutate(self, info, first_name, last_name, email, password, confirm_password):
         user_service = UserService()
         success = user_service.register(
             first_name, last_name, email, password, confirm_password

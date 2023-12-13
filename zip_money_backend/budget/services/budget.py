@@ -1,7 +1,7 @@
-from budget.models import Budget, BudgetAssignedUser
+import datetime as dt
 from typing import Optional
 
-import datetime as dt
+from budget.models import Budget, BudgetAssignedUser
 
 
 class BudgetService:
@@ -31,9 +31,7 @@ class BudgetService:
                 budget_id=budget.id, user=user, is_owner=True
             )
             assigned_budget.save()
-            if BudgetAssignedUser.objects.filter(
-                user=user, is_pined=True
-            ).first():
+            if BudgetAssignedUser.objects.filter(user=user, is_pined=True).first():
                 return budget
             assigned_budget.is_pined = True
             assigned_budget.save()
