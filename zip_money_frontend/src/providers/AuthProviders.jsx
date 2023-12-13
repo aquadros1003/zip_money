@@ -7,9 +7,15 @@ import {
 import REFRESH_TOKEN from "../api/mutations/RefreshToken";
 import backendUrl from "../configs/BackendUrl";
 
+const corsOptions = {
+  origin: backendUrl,
+  credentials: true,
+};
+
 const httpLink = createUploadLink({
   uri: `${backendUrl}graphql`,
   credentials: "include",
+  cors: corsOptions,
 });
 
 const client = new ApolloClient({

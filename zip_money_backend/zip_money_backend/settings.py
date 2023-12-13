@@ -87,7 +87,6 @@ CORS_ORIGIN_WHITELIST = [
     "https://zip-money-frontend.onrender.com",
 ]
 SESSION_COOKIE_SAMESITE = "None"
-SESSION_COOKIE_SECURE = True
 
 
 GRAPHQL_JWT = {
