@@ -99,6 +99,8 @@ GRAPHQL_JWT = {
     ],
     "JWT_VERIFY_EXPIRATION": True,
     "JWT_ALLOW_REFRESH": True,
+    "JWT_COOKIE_SECURE": True,
+    "JWT_COOKIE_SAMESITE": "None",
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
     "JWT_AUTH_TOKEN_EXPIRATION_DELTA": timedelta(minutes=5),
     "JWT_REFRESH_TOKEN_EXPIRATION_DELTA": timedelta(days=7),
