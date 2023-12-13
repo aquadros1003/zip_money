@@ -80,6 +80,9 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 ALLOWED_HOSTS = ["*"]
 CSRF_COOKIE_SECURE = True
+CORS_ALLOWED_ORIGINS = [
+    "https://zip-money-frontend.onrender.com",
+]
 CORS_ORIGIN_WHITELIST = [
     "https://zip-money-frontend.onrender.com",
 ]
