@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from datetime import timedelta
 
 import dj_database_url
 
@@ -80,18 +81,24 @@ CORS_ORIGIN_ALLOW_ALL = True
 ALLOWED_HOSTS = ["*"]
 CSRF_COOKIE_SECURE = True
 CORS_ORIGIN_WHITELIST = [
-    os.environ.get("FE_URL", "http://localhost:3000"),
+    "https://zip-money-frontend.onrender.com",
 ]
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
-CORS_ALLOW_ALL_ORIGINS = True
 
 
 GRAPHQL_JWT = {
+    "JWT_ALLOW_ANY_CLASSES": [
+        "graphql_auth.mutations.Register",
+        "graphql_auth.mutations.VerifyAccount",
+        "graphql_auth.mutations.ObtainJSONWebToken",
+    ],
     "JWT_VERIFY_EXPIRATION": True,
+    "JWT_ALLOW_REFRESH": True,
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    "JWT_AUTH_TOKEN_EXPIRATION_DELTA": timedelta(minutes=5),
+    "JWT_REFRESH_TOKEN_EXPIRATION_DELTA": timedelta(days=7),
 }
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
