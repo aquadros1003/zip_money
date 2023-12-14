@@ -8,7 +8,7 @@ from users.models import User
 class Budget(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255, blank=True, null=True)
-    budget = models.FloatField(default=0)
+    budget = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateField()

@@ -5,6 +5,8 @@ import { useMutation } from "@apollo/client";
 import PIN_BUDGET from "../api/mutations/PinBudget";
 import { Spin } from "antd";
 import backendUrl from "../configs/BackendUrl";
+import GET_BUDGETS from "../api/queries/GetBudgets";
+import { Row } from "antd";
 
 export const BudgetCard = ({
   title,
@@ -19,6 +21,7 @@ export const BudgetCard = ({
 }) => {
   const [pinBudget, { data, loading, error }] = useMutation(PIN_BUDGET, {
     variables: { budgetId: budgetId },
+    refetchQueries: () => [{ query: GET_BUDGETS }],
   });
   if (loading) return <Spin />;
   if (error) return `Error! ${error.message}`;
@@ -30,32 +33,44 @@ export const BudgetCard = ({
   return (
     <Card className="mb-4">
       <div className="text-center">
-        {avatar && (
-          <div className="float-left">
-            <img
-              className="rounded-circle"
-              src={`${backendUrl}${avatar}`}
-              alt="avatar"
-              width={40}
-              height={40}
-            />
-          </div>
-        )}
-        {!isPinned && (
-          <div className="float-right">
-            <PushpinOutlined
-              style={{ fontSize: "20px" }}
-              onClick={handlePinBudget}
-            />{" "}
-          </div>
-        )}
-        {title && <h4 className="mb-3 font-weight-bold">{title}</h4>}
+        <Row className="flex align-items-center justify-content-between">
+          {avatar && (
+            <div className="mb-3">
+              <img
+                className="rounded-circle"
+                src={`${backendUrl}${avatar}`}
+                alt="avatar"
+                width={40}
+                height={40}
+              />
+            </div>
+          )}
+          {title && <h4 className="font-weight-bold">{title}</h4>}
+          {!isPinned && (
+            <div className="float-right">
+              <PushpinOutlined
+                style={{ fontSize: "20px" }}
+                onClick={handlePinBudget}
+              />
+            </div>
+          )}
+          {isPinned && (
+            <div className="float-right disabled">
+              <PushpinOutlined
+                style={{ fontSize: "20px" }}
+                onClick={handlePinBudget}
+                hidden
+              />{" "}
+            </div>
+          )}
+        </Row>
         <Progress
           type="dashboard"
           percent={value}
           width={size}
           strokeWidth={strokeWidth}
           className="mt-1"
+          success={{ percent: -1000000 }}
         />
         <div
           className={`mt-2 mx-auto text-muted ${extra ? "mb-2" : ""}`}

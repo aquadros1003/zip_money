@@ -15,6 +15,8 @@ const GET_BUDGETS = gql`
               owner {
                 avatar
               }
+              spentRemainingPercentage
+              remainingBudget
             }
             isOwner
             isPined

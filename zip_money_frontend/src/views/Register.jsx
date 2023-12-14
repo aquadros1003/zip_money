@@ -12,12 +12,13 @@ const Register = (props) => {
       <div
         style={{
           backgroundImage: `url(${backgroundImage})`,
-          backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          height: "91.1vh",
         }}
       >
-        <div className="container py-5">
+        <div className="container py-5 my-5">
           <Row justify="center">
             <Col className="register" xs={50} sm={30} md={30} lg={12}>
               <Card>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Layout } from "antd";
+import { Layout } from "antd";
 import NavProfile from "./NavProfile";
 import Logo from "../assets/logo.png";
 
@@ -56,7 +56,7 @@ export const HeaderNav = (props) => {
         left: `${getNavWidth()}`,
       }}
     >
-      <div className="d-flex">
+      <div className="d-flex align-items-center">
         {!isMobile && (
           <div className="app-header-logo-mobile">
             <a>
@@ -67,10 +67,13 @@ export const HeaderNav = (props) => {
                 height={50}
                 className="mr-2"
               />
-            </a> <span className="font-weight-bold" style={{fontSize: "18px"}}>Zip Money</span>
+            </a>{" "}
+            <span className="font-weight-bold" style={{ fontSize: "18px" }}>
+              Zip Money
+            </span>
           </div>
         )}
-        <div className="ml-auto d-flex header-right-icons header-search-icon">
+        <div className="ml-auto d-flex align-items-center">
           <NavProfile />
         </div>
       </div>

@@ -20,6 +20,7 @@ export const GoalWidget = ({
           width={size}
           strokeWidth={strokeWidth}
           className="mt-1"
+          success={{ percent: -1000000 }}
         />
         <div
           className={`mt-2 mx-auto text-muted ${extra ? "mb-2" : ""}`}

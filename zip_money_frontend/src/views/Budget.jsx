@@ -17,8 +17,12 @@ const Budget = () => {
           <div className="col-md-6 col-lg-4" key={budget.node.id}>
             <BudgetCard
               title={budget.node.budget.name}
-              value={budget.node.budget.budget}
-              subtitle={`Ends on ${budget.node.budget.endDate}`}
+              value={budget.node.budget?.spentRemainingPercentage}
+              subtitle={
+                budget.node.budget?.remainingBudget +
+                "/" +
+                budget.node.budget?.budget
+              }
               isPinned={budget.node.isPined}
               budgetId={budget.node.budget.id}
               avatar={budget.node.budget.owner.avatar}

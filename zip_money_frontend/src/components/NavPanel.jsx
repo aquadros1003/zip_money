@@ -33,7 +33,6 @@ export class NavPanel extends Component {
           placement={this.props.direction === DIR_RTL ? "left" : "right"}
           width={350}
           onClose={this.onClose}
-
         ></Drawer>
       </>
     );

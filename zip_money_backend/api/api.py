@@ -3,14 +3,16 @@ from graphene_django.filter import DjangoFilterConnectionField
 
 from api.mutations.budget import BudgetMutation
 from api.mutations.user import UserMutation
-from api.schema.transactions import CurrencyNode
+from api.mutations.transaction import TransactionMutation
+from api.schema.transactions import CurrencyNode, CategoryNode
 from api.schema.user import UserNode
-from transactions.models import Currency
+from transactions.models import Currency, Category
 
 
 class Query(graphene.ObjectType):
     me = graphene.Field(UserNode)
     currencies = DjangoFilterConnectionField(CurrencyNode)
+    categories = DjangoFilterConnectionField(CategoryNode)
 
     def resolve_me(self, info):
         user = info.context.user
@@ -21,8 +23,11 @@ class Query(graphene.ObjectType):
     def resolve_currencies(self, info, **kwargs):
         return Currency.objects.all()
 
+    def resolve_categories(self, info, **kwargs):
+        return Category.objects.all()
 
-class Mutation(UserMutation, BudgetMutation, graphene.ObjectType):
+
+class Mutation(UserMutation, BudgetMutation, TransactionMutation, graphene.ObjectType):
     pass
 
 
