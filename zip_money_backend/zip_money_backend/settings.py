@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
+    "django_filters",
     "graphene_django",
     "corsheaders",
     "graphql_auth",
@@ -179,8 +180,7 @@ if app_settings == "Dev":
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-print(os.environ.get("FE_URL", "http://localhost:3000"))
-print(os.environ.get("BE_HOST", "localhost"))
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

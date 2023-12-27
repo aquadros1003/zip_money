@@ -14,6 +14,7 @@ from api.schema.transactions import (
 )
 from budget.models import BudgetAssignedUser
 from transactions.models import Transaction
+from api.filters.transactions import TransactionFilter
 
 
 class UserNode(DjangoObjectType):
@@ -32,7 +33,9 @@ class UserNode(DjangoObjectType):
             "email": ["exact", "icontains"],
         }
 
-    transactions = DjangoFilterConnectionField(TransactionNode, filterset_class=None)
+    transactions = DjangoFilterConnectionField(
+        TransactionNode, filterset_class=TransactionFilter
+    )
     daily_expenses = graphene.Float()
     monthly_expenses = graphene.Float()
     monthly_transactions = relay.ConnectionField(DailyTransactionConnection)

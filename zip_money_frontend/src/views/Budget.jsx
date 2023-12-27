@@ -1,8 +1,9 @@
 import React from "react";
 import BudgetCard from "../components/BudgetCard";
 import GET_BUDGETS from "../api/queries/GetBudgets";
-import { Spin } from "antd";
+import { Button, Spin } from "antd";
 import { useQuery } from "@apollo/client";
+import CreateBudget from "../components/CreateBudget";
 
 const Budget = () => {
   const { loading, error, data } = useQuery(GET_BUDGETS);
@@ -29,6 +30,9 @@ const Budget = () => {
             />
           </div>
         ))}
+        <div className="col-md-6 col-lg-4">
+          <CreateBudget></CreateBudget>
+        </div>
       </div>
     </div>
   );

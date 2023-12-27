@@ -10,9 +10,9 @@ class CreateBudget(graphene.Mutation):
 
     class Arguments:
         name = graphene.String(required=True)
-        amount = graphene.Float(required=True)
+        amount = graphene.Decimal(required=True)
         currency_id = graphene.String(required=True)
-        end_date = graphene.Date(required=True)
+        end_date = graphene.DateTime(required=True)
         description = graphene.String(required=False)
 
     def mutate(self, info, name, amount, currency_id, end_date, description):

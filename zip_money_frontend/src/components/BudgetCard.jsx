@@ -19,7 +19,7 @@ export const BudgetCard = ({
   budgetId,
   avatar,
 }) => {
-  const [pinBudget, { data, loading, error }] = useMutation(PIN_BUDGET, {
+  const [pinBudget, { loading, error }] = useMutation(PIN_BUDGET, {
     variables: { budgetId: budgetId },
     refetchQueries: () => [{ query: GET_BUDGETS }],
   });
