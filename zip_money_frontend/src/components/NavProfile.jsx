@@ -62,6 +62,10 @@ export const NavProfile = () => {
       },
     });
 
+  const [canSetCurrency, setCanSetCurrency] = useState(true);
+  const [budgetCurrency, setBudgetCurrency] = useState("");
+
+  console.log("canSetCurrency", canSetCurrency);
   const { data, refetch } = useQuery(ME);
   const [modal2Open, setModal2Open] = useState(false);
   const handleSignOut = () => {
@@ -155,7 +159,34 @@ export const NavProfile = () => {
             name="name"
             rules={[{ required: true, message: "Please input name!" }]}
           >
-            <Input />
+            <Input placeholder="Name" />
+          </Form.Item>
+          <Form.Item
+            label="Budget"
+            name="budget"
+            rules={[{ required: false, message: "Please input your budget!" }]}
+          >
+            <Select
+              placeholder="Select a budget"
+              onChange={(value) => {
+                const budget = dataBudgets?.me?.budgets?.edges?.find(
+                  (budget) => budget.node.budget.id === value
+                );
+                if (budget) {
+                  setCanSetCurrency(false);
+                  setBudgetCurrency(budget.node.budget.currency.symbol);
+                } else {
+                  setCanSetCurrency(true);
+                }
+              }}
+            >
+              <Select.Option value={null}></Select.Option>
+              {dataBudgets?.me?.budgets?.edges?.map((budget) => (
+                <Select.Option value={budget.node.budget.id}>
+                  {budget.node.budget.name}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
 
           <Row>
@@ -176,10 +207,15 @@ export const NavProfile = () => {
                 label="Currency"
                 name="currency"
                 rules={[
-                  { required: true, message: "Please input your currency!" },
+                  { required: false, message: "Please input your currency!" },
                 ]}
               >
-                <Select>
+                <Select
+                  placeholder={
+                    canSetCurrency ? "Select a currency" : budgetCurrency
+                  }
+                  disabled={!canSetCurrency}
+                >
                   {dataCurrencies?.currencies?.edges?.map((currency) => (
                     <Select.Option value={currency.node.id}>
                       {currency.node.symbol}
@@ -194,24 +230,10 @@ export const NavProfile = () => {
             name="category"
             rules={[{ required: true, message: "Please input your category!" }]}
           >
-            <Select>
+            <Select placeholder="Select a category">
               {dataCategories?.categories?.edges?.map((category) => (
                 <Select.Option value={category.node.id}>
                   {category.node.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="Budget"
-            name="budget"
-            rules={[{ required: false, message: "Please input your budget!" }]}
-          >
-            <Select>
-              {dataBudgets?.me?.budgets?.edges?.map((budget) => (
-                <Select.Option value={budget.node.budget.id}>
-                  {budget.node.budget.name}
                 </Select.Option>
               ))}
             </Select>

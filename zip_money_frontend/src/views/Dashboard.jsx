@@ -20,6 +20,7 @@ import GET_MONTHLY_CHART_DATA from "../api/queries/GetMonthlyChartData";
 import GET_PINNED_BUDGET from "../api/queries/GetPinnedBudget";
 import { Spin } from "antd";
 import NotPinnedBudget from "../components/NotPinnedBudget";
+import backendUrl from "../configs/BackendUrl";
 
 const cardDropdown = (menu) => (
   <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
@@ -64,18 +65,35 @@ const latestTransactionOption = (
 
 const tableColumns = [
   {
-    title: "Category",
+    title: "",
+    dataIndex: "category_avatar",
+    key: "category_avatar",
+    render: (text, record) => (
+      <div className="d-flex align-items-center">
+        <Avatar
+          className="font-size-sm"
+          style={{ backgroundColor: COLOR_2 }}
+          src={`${backendUrl}${text}`}
+        ></Avatar>
+      </div>
+    ),
+  },
+  {
+    title: "Name",
     dataIndex: "name",
     key: "name",
     render: (text, record) => (
       <div className="d-flex align-items-center">
-        <Avatar
-          size={30}
-          className="font-size-sm"
-          style={{ backgroundColor: record.avatarColor }}
-        >
-          {record.name[0].toUpperCase()}
-        </Avatar>
+        <span className="ml-2">{text}</span>
+      </div>
+    ),
+  },
+  {
+    title: "Category",
+    dataIndex: "category_name",
+    key: "category_name",
+    render: (text, record) => (
+      <div className="d-flex align-items-center">
         <span className="ml-2">{text}</span>
       </div>
     ),
@@ -84,6 +102,11 @@ const tableColumns = [
     title: "Date",
     dataIndex: "date",
     key: "date",
+    render: (text, record) => (
+      <div className="d-flex align-items-center">
+        <span className="ml-2">{text.split("T")[0]}</span>
+      </div>
+    ),
   },
   {
     title: "Amount",
@@ -98,7 +121,7 @@ const Dashboard = () => {
   const { loading, data } = useQuery(GET_TRANSACTIONS, {
     fetchPolicy: "cache-and-network",
   });
-  const { data: data2 } = useQuery(GET_EXPENSES, {
+  const { data: data2, loading: loading2 } = useQuery(GET_EXPENSES, {
     fetchPolicy: "cache-and-network",
   });
   const { data: chartData, loading: chartLoading } = useQuery(
@@ -118,9 +141,10 @@ const Dashboard = () => {
   const tableData = data?.me?.transactions?.edges.map((item) => ({
     amount: `${item.node.currency.symbol}` + " " + `${item.node.amount}`,
     currency: `${item.node.currency.symbol}`,
-    name: `${item.node.category.name}`,
+    category_name: `${item.node.category.name}`,
+    category_avatar: `${item.node.category.avatar}`,
+    name: `${item.node.name}`,
     date: `${item.node.date}`,
-    avatarColor: COLOR_2,
   }));
 
   useEffect(() => {
@@ -155,19 +179,32 @@ const Dashboard = () => {
         <div>
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24} lg={24} xl={10}>
-              <StatisticWidget
-                title={"Monthly Expenses"}
-                value={"$" + " " + data2?.me?.monthlyExpenses?.toFixed(2)}
-              />
+              {loading2 && (
+                <div className="text-center mt-5">
+                  <Spin />
+                </div>
+              )}
+              {!loading2 && (
+                <StatisticWidget
+                  title={"Monthly Expenses"}
+                  value={"$" + " " + data2?.me?.monthlyExpenses?.toFixed(2)}
+                />
+              )}
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={10}>
-              <StatisticWidget
-                title={"Daily Expenses"}
-                value={"$" + " " + data2?.me?.dailyExpenses?.toFixed(2)}
-              />
+              {!loading2 && (
+                  <div className="text-center mt-5">
+                    <Spin />
+                  </div>
+                ) && (
+                  <StatisticWidget
+                    title={"Daily Expenses"}
+                    value={"$" + " " + data2?.me?.dailyExpenses?.toFixed(2)}
+                  />
+                )}
             </Col>
             <Col xs={20} sm={20} md={20} lg={20} xl={4}>
-              {hasPinnedBudget && (
+              {hasPinnedBudget && !pinnedBudgetLoading && (
                 <GoalWidget
                   value={
                     pinnedBudgetData?.me?.pinnedBudget?.budget

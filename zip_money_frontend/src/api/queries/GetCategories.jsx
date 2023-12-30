@@ -7,7 +7,7 @@ const GET_CATEGORIES = gql`
         node {
           id
           name
-          image
+          avatar
         }
       }
     }

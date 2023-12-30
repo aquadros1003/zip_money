@@ -5,7 +5,7 @@ const CREATE_TRANSACTION = gql`
     $amount: Decimal!
     $name: String!
     $categoryId: String!
-    $currencyId: String!
+    $currencyId: String
     $budgetId: String
   ) {
     createTransaction(
@@ -24,7 +24,7 @@ const CREATE_TRANSACTION = gql`
         }
         category {
           name
-          image
+          avatar
         }
         budget {
           name

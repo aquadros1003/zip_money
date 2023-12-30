@@ -21,9 +21,6 @@ export const AppLayout = () => {
     navigate("/login");
   }
 
-
-  console.log(data?.me);
-
   return (
     <Layout>
       <Header

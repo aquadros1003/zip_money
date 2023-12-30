@@ -12,6 +12,10 @@ const GET_BUDGETS = gql`
               budget
               endDate
               description
+              currency {
+                name
+                symbol
+              }
               owner {
                 avatar
               }
