@@ -15,25 +15,16 @@ class User(AbstractUser):
     )
     password = models.CharField(
         max_length=255,
-        validators=[
-            MinValueValidator(8),
-            MaxValueValidator(30),
-            RegexValidator(r"^[a-zA-Z0-9]*$"),
-        ],
     )
     first_name = models.CharField(
         max_length=255,
-        validators=[MinValueValidator(2), MaxValueValidator(30)],
     )
     last_name = models.CharField(
         max_length=255,
-        validators=[MinValueValidator(2), MaxValueValidator(30)],
     )
     phone_number = models.CharField(
         max_length=255,
         validators=[
-            MinValueValidator(8),
-            MaxValueValidator(15),
             RegexValidator(r"^[0-9]*$"),
         ],
         null=True,
@@ -41,25 +32,20 @@ class User(AbstractUser):
     )
     facebook_url = models.CharField(
         max_length=255,
-        validators=[MinValueValidator(2), MaxValueValidator(255)],
         null=True,
         blank=True,
     )
     twitter_url = models.CharField(
         max_length=255,
-        validators=[MinValueValidator(2), MaxValueValidator(255)],
         null=True,
         blank=True,
     )
     instagram_url = models.CharField(
         max_length=255,
-        validators=[MinValueValidator(2), MaxValueValidator(255)],
         null=True,
         blank=True,
     )
     description = models.TextField(
-        max_length=255,
-        validators=[MinValueValidator(2), MaxValueValidator(255)],
         null=True,
         blank=True,
     )

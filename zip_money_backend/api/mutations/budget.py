@@ -37,6 +37,49 @@ class PinBudget(graphene.Mutation):
         return PinBudget(budget=budget)
 
 
+class InviteUser(graphene.Mutation):
+    budget = graphene.Field(BudgetAssignedUserNode)
+
+    class Arguments:
+        budget_id = graphene.ID(required=True)
+        email = graphene.String(required=True)
+
+    def mutate(self, info, budget_id, email):
+        budget_service = BudgetService()
+        budget_id = from_global_id(budget_id)[1]
+        budget = budget_service.invite_user(info, budget_id, email)
+        return InviteUser(budget=budget)
+
+
+class AcceptBudget(graphene.Mutation):
+    budget = graphene.Field(BudgetAssignedUserNode)
+
+    class Arguments:
+        budget_id = graphene.ID(required=True)
+
+    def mutate(self, info, budget_id):
+        budget_service = BudgetService()
+        budget_id = from_global_id(budget_id)[1]
+        budget = budget_service.accept_budget(info, budget_id)
+        return AcceptBudget(budget=budget)
+
+
+class RejectBudget(graphene.Mutation):
+    budget = graphene.Field(BudgetAssignedUserNode)
+
+    class Arguments:
+        budget_id = graphene.ID(required=True)
+
+    def mutate(self, info, budget_id):
+        budget_service = BudgetService()
+        budget_id = from_global_id(budget_id)[1]
+        budget = budget_service.reject_budget(info, budget_id)
+        return RejectBudget(budget=budget)
+
+
 class BudgetMutation(graphene.ObjectType):
     create_budget = CreateBudget.Field()
     pin_budget = PinBudget.Field()
+    invite_user = InviteUser.Field()
+    accept_budget = AcceptBudget.Field()
+    reject_budget = RejectBudget.Field()

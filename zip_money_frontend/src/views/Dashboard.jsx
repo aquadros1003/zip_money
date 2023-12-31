@@ -120,6 +120,10 @@ const Dashboard = () => {
 
   const { loading, data } = useQuery(GET_TRANSACTIONS, {
     fetchPolicy: "cache-and-network",
+    variables: {
+      first: 7,
+      offset: 0,
+    },
   });
   const { data: data2, loading: loading2 } = useQuery(GET_EXPENSES, {
     fetchPolicy: "cache-and-network",
@@ -138,13 +142,13 @@ const Dashboard = () => {
     }
   );
 
-  const tableData = data?.me?.transactions?.edges.map((item) => ({
-    amount: `${item.node.currency.symbol}` + " " + `${item.node.amount}`,
-    currency: `${item.node.currency.symbol}`,
-    category_name: `${item.node.category.name}`,
-    category_avatar: `${item.node.category.avatar}`,
-    name: `${item.node.name}`,
-    date: `${item.node.date}`,
+  const tableData = data?.me?.transactions?.results?.map((item) => ({
+    amount: `${item.currency.symbol}` + " " + `${item.amount}`,
+    currency: `${item.currency.symbol}`,
+    category_name: `${item.category.name}`,
+    category_avatar: `${item.category.avatar}`,
+    name: `${item.name}`,
+    date: `${item.date}`.split("T")[0],
   }));
 
   useEffect(() => {
@@ -167,7 +171,6 @@ const Dashboard = () => {
   }, [chartData]);
 
   const hasPinnedBudget = pinnedBudgetData?.me?.pinnedBudget !== null;
-
   return (
     <>
       <Col span={24}>

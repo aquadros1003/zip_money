@@ -22,6 +22,7 @@ import UPDATE_AVATAR from "../api/mutations/UpdateAvatar";
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import backendUrl from "../configs/BackendUrl";
+import AvatarImg from "../assets/default-avatar.jpg";
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -140,7 +141,7 @@ export const UpdateProfileForm = () => {
                   <Avatar src={previewUrl} alt="avatar" size={270} />
                 ) : (
                   <Avatar
-                    src={`${backendUrl}${user?.avatar}`}
+                    src={user?.avatar ? backendUrl + user?.avatar : AvatarImg}
                     alt="avatar"
                     size={270}
                   />
@@ -233,12 +234,6 @@ export const UpdateProfileForm = () => {
                 className="update-profile-input"
                 placeholder={user?.dateOfBirth?.toLocaleString().split("T")[0]}
               />
-            </Form.Item>
-            <Form.Item
-              name="gender"
-              rules={[{ message: "Please input your phone number" }]}
-            >
-              <Input className="update-profile-input" placeholder="Gender" />
             </Form.Item>
           </Col>
         </Row>

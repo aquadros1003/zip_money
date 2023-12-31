@@ -3,7 +3,7 @@ import {
   LaptopOutlined,
   NotificationOutlined,
   UserOutlined,
-  AccountBookOutlined
+  AccountBookOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -14,28 +14,28 @@ const items2 = [
     icon: <LaptopOutlined />,
     title: "Dashboard",
     path: "/dashboard",
-    label: "Dashboard"
+    label: "Dashboard",
   },
   {
     key: "2",
     icon: <AccountBookOutlined />,
     title: "Transactions",
     path: "/dashboard/transactions",
-    label: "Transactions"
+    label: "Transactions",
   },
   {
     key: "3",
     icon: <UserOutlined />,
     title: "User",
     path: "/dashboard/budget",
-    label: "Budget"
+    label: "Budgets",
   },
   {
     key: "4",
     icon: <NotificationOutlined />,
-    title: "Notification",
+    title: "Notifications",
     path: "/dashboard/notification",
-    label: "Notification"
+    label: "Notifications",
   },
 ];
 
@@ -50,12 +50,12 @@ export const SideNav = () => {
         height: "100%",
       }}
     >
-        {items2.map((item) => (
-            <Menu.Item key={item.key} icon={item.icon}>
-            {item.label}
-            <Link to={item.path} />
-            </Menu.Item>
-        ))}
+      {items2.map((item) => (
+        <Menu.Item key={item.key} icon={item.icon}>
+          {item.label}
+          <Link to={item.path} />
+        </Menu.Item>
+      ))}
     </Menu>
-    );
-}
+  );
+};

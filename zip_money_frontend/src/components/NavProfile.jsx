@@ -6,7 +6,7 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import Icon from "../components/Icon";
-import AvatarImg from "../assets/avatar.jpg";
+import AvatarImg from "../assets/default-avatar.jpg";
 import { useMutation } from "@apollo/client";
 import SIGN_OUT from "../api/mutations/SignOut";
 import { useNavigate } from "react-router-dom";
@@ -50,22 +50,27 @@ export const NavProfile = () => {
     useMutation(CREATE_TRANSACTION, {
       refetchQueries: () => [
         {
-          query: ME,
-          GET_TRANSACTIONS,
-          GET_EXPENSES,
-          GET_MONTHLY_CHART_DATA,
-          GET_PINNED_BUDGET,
+          query: GET_TRANSACTIONS,
+        },
+        {
+          query: GET_EXPENSES,
+        },
+        {
+          query: GET_MONTHLY_CHART_DATA,
+        },
+        {
+          query: GET_PINNED_BUDGET,
         },
       ],
       onCompleted: () => {
         setModal2Open(false);
+        // clear form
       },
     });
 
   const [canSetCurrency, setCanSetCurrency] = useState(true);
   const [budgetCurrency, setBudgetCurrency] = useState("");
 
-  console.log("canSetCurrency", canSetCurrency);
   const { data, refetch } = useQuery(ME);
   const [modal2Open, setModal2Open] = useState(false);
   const handleSignOut = () => {
@@ -258,7 +263,10 @@ export const NavProfile = () => {
       >
         <Menu className="d-flex align-item-center" mode="horizontal">
           <Menu.Item key="profile">
-            <Avatar size={45} src={`${backendUrl}${data?.me?.avatar}`} />
+            <Avatar
+              size={45}
+              src={data?.me?.avatar ? backendUrl + data?.me?.avatar : AvatarImg}
+            />
           </Menu.Item>
         </Menu>
       </Dropdown>

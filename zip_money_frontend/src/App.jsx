@@ -13,6 +13,8 @@ import AppLayout from "./layouts/AppLayout";
 import Budget from "./views/Budget";
 import UpdateProfile from "./views/UpdateProfile";
 import CreateBudgetForm from "./components/CreateBudgetForm";
+import Transactions from "./views/Transactions";
+import Notifications from "./views/Notifications";
 
 function App() {
   return (
@@ -29,12 +31,20 @@ function App() {
               <Route path="/dashboard/" element={<Dashboard />} />
               <Route path="/dashboard/budget" element={<Budget />} />
               <Route
+                path="/dashboard/transactions"
+                element={<Transactions />}
+              />
+              <Route
                 path="/dashboard/create-budget"
                 element={<CreateBudgetForm />}
               />
               <Route
                 path="/dashboard/update-profile"
                 element={<UpdateProfile />}
+              />
+              <Route
+                path="/dashboard/notification"
+                element={<Notifications />}
               />
             </Route>
           </Routes>
