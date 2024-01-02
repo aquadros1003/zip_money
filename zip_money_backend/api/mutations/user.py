@@ -38,6 +38,19 @@ class SignIn(graphene.Mutation):
         return SignIn(user=user, token=token)
 
 
+class Activate(graphene.Mutation):
+    success = graphene.Boolean()
+
+    class Arguments:
+        uidb64 = graphene.String(required=True)
+        token = graphene.String(required=True)
+
+    def mutate(self, info, uidb64, token):
+        user_service = UserService()
+        success = user_service.activate(info, uidb64, token)
+        return Activate(success=success)
+
+
 class SignOut(graphene.Mutation):
     success = graphene.Boolean()
 
@@ -108,7 +121,6 @@ class UpdateAvatar(graphene.Mutation):
 
     def mutate(self, info, avatar: Upload):
         user_service = UserService()
-        print(avatar)
         user = user_service.update_avatar(info, avatar)
         return UpdateAvatar(user=user)
 
@@ -121,3 +133,4 @@ class UserMutation(graphene.ObjectType):
     refresh_token = graphql_jwt.Refresh.Field()
     update_profile = UpdateProfile.Field()
     update_avatar = UpdateAvatar.Field()
+    activate = Activate.Field()

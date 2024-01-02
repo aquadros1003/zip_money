@@ -4,6 +4,7 @@ import {
   NotificationOutlined,
   UserOutlined,
   AccountBookOutlined,
+  AuditOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -36,6 +37,13 @@ const items2 = [
     title: "Notifications",
     path: "/dashboard/notification",
     label: "Notifications",
+  },
+  {
+    key: "5",
+    icon: <AuditOutlined />,
+    title: "Reports",
+    path: "/dashboard/reports",
+    label: "Reports",
   },
 ];
 

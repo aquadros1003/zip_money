@@ -11,6 +11,11 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from graphene_file_upload.scalars import Upload
 from graphql_jwt.shortcuts import create_refresh_token, get_token
+from django.template.loader import get_template
+from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.http import JsonResponse
+from django.utils.http import urlsafe_base64_decode
 
 from users.models import User
 from zip_money_backend.settings import BASE_DIR
@@ -38,17 +43,33 @@ class UserService:
             last_name=last_name,
         )
         user.set_password(password)
-        # self._send_confirmation_email(user)
         user.save()
+        self._send_confirmation_email(user)
+        status = user.status
+        status.verified = False
+        status.save()
         return True
 
     def login(self, info, email: str, password: str) -> tuple:
         if user := authenticate(email=email, password=password):
+            status = user.status
+            if not status.verified:
+                raise Exception("Email is not verified")
             token = get_token(user)
             info.context.jwt_token = token
             info.context.jwt_refresh_token = create_refresh_token(user)
             return user, token
         raise Exception("Invalid credentials")
+
+    def activate(self, info, uidb64, token):
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+        if user is not None and PasswordResetTokenGenerator().check_token(user, token):
+            user.status.verified = True
+            user.status.save()
+            user.save()
+            return True
+        return False
 
     def social_auth(self, info, client_id: str, credentials: str) -> None:
         if client_id != settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY:
@@ -76,23 +97,22 @@ class UserService:
         return True
 
     def _send_confirmation_email(self, user: User):
-        subject = "Potwierdzenie rejestracji"
-        engine = engines["django"]
-        template = engine.from_string(
-            open(f"{BASE_DIR}/templates/emails/confirmation.html").read()
-        )
         context = {
             "user": user,
-            "domain": "localhost:8000",
+            "domain": settings.FE_URL,
             "uid": urlsafe_base64_encode(force_bytes(user.id)),
             "token": self.token_generator.make_token(user),
+            "path": "activate",
         }
-        message = template.render(context)
-        email_from = settings.EMAIL_HOST_USER
-        recipient_list = [
-            user.email,
-        ]
-        send_mail(subject, message, email_from, recipient_list)
+        template = get_template("emails/confirmation.html")
+        html = template.render(context)
+        send_mail(
+            "Confirm your email",
+            "",
+            settings.EMAIL_HOST_USER,
+            [user.email],
+            html_message=html,
+        )
 
     def update_profile(
         self,
@@ -102,7 +122,6 @@ class UserService:
         phone_number: str,
         description: str,
         date_of_birth: dt.datetime,
-        # gender: str,
         facebook_url: str,
         instagram_url: str,
         twitter_url: str,

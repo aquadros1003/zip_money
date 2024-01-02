@@ -1,21 +1,22 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import { Spin } from "antd";
-import GET_INVITATIONS from "../api/queries/GetInvitations";
-import Notification from "../components/Notification";
+import GET_REPORTS from "../api/queries/GetReports";
+import Report from "../components/Report";
 
-const Notifications = () => {
-  const { loading, error, data } = useQuery(GET_INVITATIONS);
+const Reports = () => {
+  const { loading, error, data } = useQuery(GET_REPORTS);
   if (loading) return <Spin />;
   if (error) return `Error! ${error.message}`;
 
+  console.log(data);
   return (
-    (data.me.invitations.edges.length > 0 && (
+    (data.me.reports.edges.length > 0 && (
       <div className="container">
         <div className="column">
-          {data.me.invitations.edges.map((invitation) => (
+          {data.me.reports.edges.map((report) => (
             <div className="p-3">
-              <Notification budget={invitation.node} id={invitation.node.id} />
+              <Report report={report.node} id={report.node.id} />
             </div>
           ))}
         </div>
@@ -24,7 +25,7 @@ const Notifications = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-6 col-lg-4">
-            <h1>No new notifications</h1>
+            <h1>No reports</h1>
           </div>
         </div>
       </div>
@@ -32,4 +33,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications;
+export default Reports;

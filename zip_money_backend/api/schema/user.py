@@ -16,6 +16,8 @@ from budget.models import BudgetAssignedUser
 from transactions.models import Transaction
 from graphql_relay import from_global_id
 from graphene_django_pagination import DjangoPaginationConnectionField
+from api.schema.report import ReportNode
+from report.models import Report
 
 
 class UserNode(DjangoObjectType):
@@ -51,6 +53,7 @@ class UserNode(DjangoObjectType):
     invitations = DjangoFilterConnectionField(
         BudgetAssignedUserNode, filterset_class=None
     )
+    reports = DjangoFilterConnectionField(ReportNode, filterset_class=None)
 
     def resolve_transactions(self, info, **kwargs):
         query = Transaction.objects.filter(user=self)
@@ -124,3 +127,6 @@ class UserNode(DjangoObjectType):
         return BudgetAssignedUser.objects.filter(
             user=self, status=BudgetAssignedUser.STATUS.PENDING
         )
+
+    def resolve_reports(self, info, **kwargs):
+        return Report.objects.filter(user=self).order_by("-created_at")

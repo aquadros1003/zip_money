@@ -23,7 +23,6 @@ from graphene_file_upload.django import FileUploadGraphQLView
 from graphql_jwt.decorators import jwt_cookie
 
 from api.api import schema
-from users.views import activate
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -34,7 +33,6 @@ urlpatterns = [
         ),
         name="graphql",
     ),
-    path("activate/" "<uidb64>/<token>", activate, name="activate"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

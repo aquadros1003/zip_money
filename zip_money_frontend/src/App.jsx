@@ -15,6 +15,8 @@ import UpdateProfile from "./views/UpdateProfile";
 import CreateBudgetForm from "./components/CreateBudgetForm";
 import Transactions from "./views/Transactions";
 import Notifications from "./views/Notifications";
+import Activation from "./views/Activation";
+import Reports from "./views/Reports";
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/activate/:uid/:token" element={<Activation />} />
             <Route path="/dashboard" element={<AppLayout />}>
               <Route path="/dashboard/" element={<Dashboard />} />
               <Route path="/dashboard/budget" element={<Budget />} />
@@ -46,6 +49,7 @@ function App() {
                 path="/dashboard/notification"
                 element={<Notifications />}
               />
+              <Route path="/dashboard/reports" element={<Reports />} />
             </Route>
           </Routes>
         </Router>

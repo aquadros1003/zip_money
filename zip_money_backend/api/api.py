@@ -7,6 +7,7 @@ from api.mutations.transaction import TransactionMutation
 from api.schema.transactions import CurrencyNode, CategoryNode
 from api.schema.user import UserNode
 from transactions.models import Currency, Category
+from api.mutations.report import ReportMutation
 
 
 class Query(graphene.ObjectType):
@@ -27,7 +28,13 @@ class Query(graphene.ObjectType):
         return Category.objects.all()
 
 
-class Mutation(UserMutation, BudgetMutation, TransactionMutation, graphene.ObjectType):
+class Mutation(
+    UserMutation,
+    BudgetMutation,
+    TransactionMutation,
+    ReportMutation,
+    graphene.ObjectType,
+):
     pass
 
 

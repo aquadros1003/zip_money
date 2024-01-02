@@ -26,6 +26,8 @@ import { ReloadOutlined } from "@ant-design/icons";
 import GET_CATEGORIES from "../api/queries/GetCategories";
 import GET_CURRENCIES from "../api/queries/GetCurrencies";
 import GET_BUDGETS from "../api/queries/GetBudgets";
+import CREATE_REPORT from "../api/mutations/CreateReport";
+import { useMutation } from "@apollo/client";
 
 const Transactions = () => {
   const [lastDays, setLastDays] = useState(7);
@@ -53,14 +55,21 @@ const Transactions = () => {
       fetchPolicy: "cache-and-network",
     }
   );
-  console.log(dateFrom);
+  const handleSetDateFrom = (date) => {
+    setDateFrom(date);
+    setLastDays(null);
+  };
+  const handleSetDateTo = (date) => {
+    setDateTo(date);
+    setLastDays(null);
+  };
 
   const { loading, data } = useQuery(GET_TRANSACTIONS, {
     fetchPolicy: "cache-and-network",
     variables: {
       first: 10,
       offset: (page - 1) * 10,
-      lastDaysRange: lastDays,
+      lastDaysRange: lastDays ? lastDays : null,
       categoryId: category ? category : null,
       budgetId: budget ? budget : null,
       currencyId: currency ? currency : null,
@@ -69,9 +78,31 @@ const Transactions = () => {
     },
   });
 
+  const [createReport, { loading: loadingReport }] = useMutation(
+    CREATE_REPORT,
+    {
+      variables: {
+        lastDaysRange: lastDays ? lastDays : null,
+        categoryId: category ? category : null,
+        budgetId: budget ? budget : null,
+        currencyId: currency ? currency : null,
+        dateFrom: dateFrom ? dateFrom : null,
+        dateTo: dateTo ? dateTo : null,
+      },
+      onCompleted: (data) => {
+        toast.success("Report generated successfully");
+        window.open(backendUrl + data.createReport.report.reportUrl);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
+  );
+
   return (
     <>
       <Col span={24}>
+        <Toaster />
         {loading && (
           <Row justify="center">
             <Col>
@@ -83,18 +114,14 @@ const Transactions = () => {
           <Row gutter={[20, 20]}>
             <Col span={24} className="d-flex justify-content-start">
               <DatePicker
-                onChange={(date) => setDateFrom(date)}
-                placeholder={
-                  dateFrom ? dateFrom.toLocaleString().split("T")[0] : "From"
-                }
+                onChange={(date) => handleSetDateFrom(date)}
+                defaultValue={dateFrom}
                 style={{ width: 200 }}
                 className="mr-2"
               />
               <DatePicker
-                onChange={(date) => setDateTo(date)}
-                placeholder={
-                  dateTo ? dateTo.toLocaleString().split("T")[0] : "To"
-                }
+                onChange={(date) => handleSetDateTo(date)}
+                defaultValue={dateTo}
                 style={{ width: 200 }}
                 className="mr-2"
               />
@@ -102,8 +129,10 @@ const Transactions = () => {
                 defaultValue={lastDays}
                 onChange={(value) => setLastDays(value)}
                 style={{ width: 120 }}
+                disabled={!lastDays}
                 className="mr-2"
               >
+                <Select.Option value={null}>All time</Select.Option>
                 <Select.Option value={7}>Last 7 days</Select.Option>
                 <Select.Option value={30}>Last 30 days</Select.Option>
                 <Select.Option value={90}>Last 90 days</Select.Option>
@@ -158,6 +187,11 @@ const Transactions = () => {
                 }}
                 icon={<ReloadOutlined />}
               ></Button>
+              <div className="ml-auto">
+                <Button onClick={() => createReport()} loading={loadingReport}>
+                  Generate report
+                </Button>
+              </div>
             </Col>
             <Col span={24}>
               <Card>
@@ -177,6 +211,11 @@ const Transactions = () => {
                           ></Avatar>
                         </div>
                       ),
+                    },
+                    {
+                      title: "Name",
+                      dataIndex: "name",
+                      key: "name",
                     },
                     {
                       title: "Category",

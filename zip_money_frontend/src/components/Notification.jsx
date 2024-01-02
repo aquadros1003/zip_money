@@ -34,7 +34,7 @@ export const Notification = (budget) => {
   );
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
-  console.log(budget);
+
   const handleAccept = () => {
     acceptBudget({
       variables: {

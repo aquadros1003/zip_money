@@ -1,6 +1,77 @@
-{% autoescape off %}
-Hi ,
-Please click on the link to confirm your registration,
-http://{{ domain }}/activate/{{ uid }}/{{ token }}
-
-{% endautoescape %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Activate Account</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+      .container {
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        padding: 30px;
+        max-width: 600px;
+        margin: 0 auto;
+        margin-top: 50px;
+      }
+      h1 {
+        margin-top: 0;
+        font-size: 32px;
+        color: #4b4b4b;
+        text-align: center;
+      }
+      p {
+        font-size: 18px;
+        color: #4b4b4b;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      .button {
+        display: inline-block;
+        font-size: 16px;
+        font-weight: 500;
+        color: #ffffff;
+        background-color: #e0c333;
+        border-radius: 5px;
+        padding: 12px 24px;
+        margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-left: 50%;
+        transform: translateX(-50%);
+      }
+      .button:hover {
+        background-color: #d7b920;
+      }
+      img {
+        display: block;
+        margin: 0 auto;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        max-width: 200px;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img src="https://firebasestorage.googleapis.com/v0/b/imgger.appspot.com/o/src%2FLOGO.png?alt=media&token=b3b95138-7352-458f-834c-3cf91dcffa33&_gl=1*8kfri1*_ga*NjY1NDczNjQ4LjE2ODE3MzI4NDY.*_ga_CW55HF8NVT*MTY4NTQ0NDMyOS44LjEuMTY4NTQ0NDQ4Mi4wLjAuMA.." alt="Pysquad">
+      <h1>Imgger</h1>
+      <p>Hello {{ user.email }},</p>
+      <p>Please activate your account by clicking the button below.</p>
+      <a href="{{ domain }}/{{ path }}/{{uid}}/{{ token }}" class="button">Activate Account</a>
+    </div>
+  </body>
+</html>
