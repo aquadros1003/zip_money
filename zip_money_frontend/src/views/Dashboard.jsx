@@ -22,47 +22,6 @@ import { Spin } from "antd";
 import NotPinnedBudget from "../components/NotPinnedBudget";
 import backendUrl from "../configs/BackendUrl";
 
-const cardDropdown = (menu) => (
-  <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
-    <a
-      href="/#"
-      className="text-gray font-size-lg"
-      onClick={(e) => e.preventDefault()}
-    >
-      <EllipsisOutlined />
-    </a>
-  </Dropdown>
-);
-
-const latestTransactionOption = (
-  <Menu>
-    <Menu.Item key="0">
-      <span>
-        <div className="d-flex align-items-center">
-          <ReloadOutlined />
-          <span className="ml-2">Refresh</span>
-        </div>
-      </span>
-    </Menu.Item>
-    <Menu.Item key="1">
-      <span>
-        <div className="d-flex align-items-center">
-          <PrinterOutlined />
-          <span className="ml-2">Print</span>
-        </div>
-      </span>
-    </Menu.Item>
-    <Menu.Item key="12">
-      <span>
-        <div className="d-flex align-items-center">
-          <FileExcelOutlined />
-          <span className="ml-2">Export</span>
-        </div>
-      </span>
-    </Menu.Item>
-  </Menu>
-);
-
 const tableColumns = [
   {
     title: "",
@@ -218,7 +177,9 @@ const Dashboard = () => {
                       2
                     ) +
                     "/" +
-                    pinnedBudgetData?.me?.pinnedBudget?.budget?.budget
+                    pinnedBudgetData?.me?.pinnedBudget?.budget?.budget +
+                    " " +
+                    pinnedBudgetData?.me?.pinnedBudget?.budget?.currency?.symbol
                   }
                 />
               )}
@@ -242,10 +203,7 @@ const Dashboard = () => {
             />
           </Col>
           <Col span={24} className="mt-4">
-            <Card
-              title="Latest Transactions"
-              extra={cardDropdown(latestTransactionOption)}
-            >
+            <Card title="Latest Transactions">
               <Table
                 className="no-border-last"
                 columns={tableColumns}

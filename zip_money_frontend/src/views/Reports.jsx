@@ -9,7 +9,6 @@ const Reports = () => {
   if (loading) return <Spin />;
   if (error) return `Error! ${error.message}`;
 
-  console.log(data);
   return (
     (data.me.reports.edges.length > 0 && (
       <div className="container">

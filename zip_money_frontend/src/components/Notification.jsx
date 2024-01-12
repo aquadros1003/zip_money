@@ -58,15 +58,21 @@ export const Notification = (budget) => {
       <div className="card-body">
         <Row>
           <Col xl={18} lg={18} md={18} sm={18} xs={18}>
-            <h5 className="card-title">{budget?.budget?.budget?.name}</h5>
-            <p className="card-text">{budget?.budget.budget.description}</p>
+            <h5 className="card-title">
+              Invitation to <b>{budget?.budget.budget.name}</b> budget from{" "}
+              {budget?.budget.budget.owner.firstName}{" "}
+              {budget?.budget.budget.owner.lastName}
+            </h5>
             <p className="card-text">
-              {budget?.budget.budget.budget}{" "}
+              Description: {budget?.budget.budget.description}
+            </p>
+            <p className="card-text">
+              Amount: {budget?.budget.budget.budget}{" "}
               {budget?.budget.budget.currency.symbol}
             </p>
             <p className="card-text">{budget?.budget.budget.endDate}</p>
           </Col>
-          <Col className="d-flex justify-content-end">
+          <Col className="d-flex justify-content-end align-items-center">
             <Button
               type="primary"
               className="mr-2"

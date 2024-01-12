@@ -10,6 +10,7 @@ const GET_BUDGETS = gql`
               id
               name
               budget
+              startDate
               endDate
               description
               currency {
@@ -17,10 +18,25 @@ const GET_BUDGETS = gql`
                 symbol
               }
               owner {
+                firstName
+                lastName
                 avatar
               }
               spentRemainingPercentage
               remainingBudget
+              assignedUsers {
+                edges {
+                  node {
+                    id
+                    isOwner
+                    user {
+                      firstName
+                      lastName
+                      avatar
+                    }
+                  }
+                }
+              }
             }
             isOwner
             isPined

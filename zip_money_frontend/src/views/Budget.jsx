@@ -22,15 +22,19 @@ const Budget = () => {
               subtitle={
                 budget.node.budget?.remainingBudget +
                 "/" +
-                budget.node.budget?.budget
+                budget.node.budget?.budget +
+                " " +
+                budget.node.budget?.currency?.symbol
               }
               isPinned={budget.node.isPined}
               budgetId={budget.node.budget.id}
               avatar={budget.node.budget.owner.avatar}
+              isOwner={budget.node.isOwner}
+              budget={budget}
             />
           </div>
         ))}
-        <div className="col-md-6 col-lg-4">
+        <div className="col-md-6 col-lg-4 align-items-center justify-content-center d-flex">
           <CreateBudget></CreateBudget>
         </div>
       </div>

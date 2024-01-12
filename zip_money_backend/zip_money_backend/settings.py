@@ -105,7 +105,7 @@ GRAPHQL_JWT = {
     "JWT_COOKIE_SECURE": True,
     "JWT_COOKIE_SAMESITE": "None",
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
-    "JWT_AUTH_TOKEN_EXPIRATION_DELTA": timedelta(minutes=5),
+    "JWT_AUTH_TOKEN_EXPIRATION_DELTA": timedelta(days=7),
     "JWT_REFRESH_TOKEN_EXPIRATION_DELTA": timedelta(days=7),
 }
 TEMPLATES = [
@@ -133,9 +133,14 @@ WSGI_APPLICATION = "zip_money_backend.wsgi.application"
 app_settings: str = os.environ.get("APP_SETTINGS", "Dev")
 
 DATABASES = {
-    "default": dj_database_url.parse(
-        os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3")
-    )
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.environ.get("POSTGRES_DB", "zip_money_db"),
+        "USER": os.environ.get("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": os.environ.get("POSTGRES_PORT", "1238"),
+    }
 }
 
 # Password validation

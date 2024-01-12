@@ -18,6 +18,8 @@ const GET_INVITATIONS = gql`
               }
               owner {
                 avatar
+                firstName
+                lastName
               }
               spentRemainingPercentage
               remainingBudget

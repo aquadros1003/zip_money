@@ -13,12 +13,14 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=zip_money_db
+      - POSTGRES_HOST=zip_money_db
+      - POSTGRES_PORT=5432
     volumes:
       - type: bind
         source: ./zip_money_backend
         target: /app
-    # depends_on:
-    #   - zip_money_db
+    depends_on:
+      - zip_money_db
 
   zip_money_frontend:
     build: ./zip_money_frontend
@@ -35,19 +37,19 @@ services:
     depends_on:
       - zip_money_backend
 
-  # zip_money_db:
-  #   image: postgres:15.3-alpine3.18
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
-  #     - POSTGRES_DB=zip_money_db
-  #   ports:
-  #     - '1238:5432'
-  #   volumes:
-  #     - type: bind
-  #       source: ./zip_money_db/
-  #       target: /var/lib/postgresql/data/
+  zip_money_db:
+    image: postgres:15.3-alpine3.18
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=zip_money_db
+    ports:
+      - '1238:5432'
+    volumes:
+      - type: bind
+        source: ./zip_money_db/
+        target: /var/lib/postgresql/data/
 
   mailhog:
     image: mailhog/mailhog

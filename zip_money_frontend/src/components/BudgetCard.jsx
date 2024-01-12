@@ -18,6 +18,7 @@ import { EllipsisOutlined } from "@ant-design/icons";
 import InviteModal from "./InviteModal";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import BudgetDetails from "./BudgetDetails";
 
 export const BudgetCard = ({
   title,
@@ -26,28 +27,59 @@ export const BudgetCard = ({
   subtitle,
   strokeWidth,
   extra,
-  isPinned,
   budgetId,
   avatar,
+  isOwner,
+  budget,
+  isPinned,
 }) => {
-  const [pinBudget, { loading, error }] = useMutation(PIN_BUDGET, {
-    variables: { budgetId: budgetId },
-    refetchQueries: () => [
+  console.log("budget", isPinned);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
+  const [pinBudget, { data, loading, error }] = useMutation(PIN_BUDGET, {
+    onCompleted: () => {
+      toast.success("Budget pinned successfully", {
+        duration: 4000,
+        position: "bottom-right",
+        style: {
+          border: "1px solid #fff",
+          padding: "20px",
+          fontSize: "1rem",
+        },
+        iconTheme: {
+          primary: "#fff",
+          secondary: "#0000ff",
+        },
+      });
+    },
+    refetchQueries: [
       {
         query: GET_BUDGETS,
       },
     ],
   });
+
   if (loading) return <Spin />;
   if (error) return `Error! ${error.message}`;
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handlePinBudget = () => {
-    pinBudget();
+  const handlePinBudget = (budgetId) => {
+    pinBudget({
+      variables: {
+        budgetId: budgetId,
+      },
+      refetchQueries: [
+        {
+          query: GET_BUDGETS,
+        },
+      ],
+    });
   };
 
   const showModal = () => {
     setIsModalVisible(true);
+  };
+  const ShowDetailsModal = () => {
+    setIsDetailsModalVisible(true);
   };
 
   const cardDropdown = (menu) => (
@@ -56,35 +88,6 @@ export const BudgetCard = ({
         <EllipsisOutlined />
       </a>
     </Dropdown>
-  );
-
-  const BudgetOption = (
-    <Menu>
-      <Menu.Item key="0">
-        <span>
-          <div className="d-flex align-items-center" onClick={handlePinBudget}>
-            <PushpinOutlined />
-            <span className="ml-2">Pin Budget</span>
-          </div>
-        </span>
-      </Menu.Item>
-      <Menu.Item key="1">
-        <span>
-          <div className="d-flex align-items-center" onClick={showModal}>
-            <SendOutlined />
-            <span className="ml-2">Invite</span>
-          </div>
-        </span>
-      </Menu.Item>
-      <Menu.Item key="12">
-        <span>
-          <div className="d-flex align-items-center">
-            <FileExcelOutlined />
-            <span className="ml-2">Details</span>
-          </div>
-        </span>
-      </Menu.Item>
-    </Menu>
   );
 
   return (
@@ -101,6 +104,11 @@ export const BudgetCard = ({
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
       />
+      <BudgetDetails
+        budget={budget}
+        isDetailsModalVisible={isDetailsModalVisible}
+        setIsDetailsModalVisible={setIsDetailsModalVisible}
+      />
       <div className="text-center">
         <Row className="flex align-items-center justify-content-between">
           {avatar ? (
@@ -113,7 +121,50 @@ export const BudgetCard = ({
             <Avatar src={AvatarImg} size={40} className="float-left" />
           )}
           {title && <h4 className="font-weight-bold">{title}</h4>}
-          <div className="float-right">{cardDropdown(BudgetOption)}</div>
+          <div className="float-right">
+            {cardDropdown(
+              <Menu>
+                <Menu.Item
+                  key="0"
+                  onClick={() => handlePinBudget(budgetId)}
+                  disabled={isPinned}
+                >
+                  <span>
+                    <div className="d-flex align-items-center">
+                      <PushpinOutlined
+                        style={{ color: isPinned ? "#fadb14" : "" }}
+                      />
+                      <span className="ml-2">Pin Budget</span>
+                    </div>
+                  </span>
+                </Menu.Item>
+                {isOwner && (
+                  <Menu.Item key="1">
+                    <span>
+                      <div
+                        className="d-flex align-items-center"
+                        onClick={showModal}
+                      >
+                        <SendOutlined />
+                        <span className="ml-2">Invite</span>
+                      </div>
+                    </span>
+                  </Menu.Item>
+                )}
+                <Menu.Item key="2">
+                  <span>
+                    <div
+                      className="d-flex align-items-center"
+                      onClick={() => ShowDetailsModal(true)}
+                    >
+                      <FileExcelOutlined />
+                      <span className="ml-2">Details</span>
+                    </div>
+                  </span>
+                </Menu.Item>
+              </Menu>
+            )}
+          </div>
         </Row>
         <Progress
           type="dashboard"

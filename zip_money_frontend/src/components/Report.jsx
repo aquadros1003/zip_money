@@ -3,6 +3,7 @@ import { Col } from "antd";
 import { Row } from "antd";
 import backendUrl from "../configs/BackendUrl";
 import { Button } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 
 export const Report = (report) => {
   return (
@@ -24,7 +25,14 @@ export const Report = (report) => {
               }
             </h3>
           </Col>
-          <Col xl={6} lg={6} md={6} sm={6} xs={6}>
+          <Col
+            xl={6}
+            lg={6}
+            md={6}
+            sm={6}
+            xs={6}
+            className="d-flex justify-content-end align-items-center"
+          >
             <a
               href={`${backendUrl}${report.report.reportUrl}`}
               target="_blank"
@@ -34,6 +42,7 @@ export const Report = (report) => {
               }`}
             >
               <Button type="primary" className="mr-2">
+                <DownloadOutlined />
                 Download
               </Button>
             </a>

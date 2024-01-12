@@ -50,8 +50,9 @@ class ReportService:
 
         filename = f"report-{random.randint(0, 100000)}.pdf"
         with open(f"media/{filename}", "wb") as pdf_file:
+            ## with polish letters
             pisa_status = pisa.CreatePDF(
-                html.encode("UTF-8"), dest=pdf_file, encoding="UTF-8"
+                html.encode("utf-8"), dest=pdf_file, encoding="utf-8"
             )
         if pisa_status.err:
             raise Exception("Error creating the report")

@@ -8,7 +8,6 @@ import { Button } from "antd";
 import { toast, Toaster } from "react-hot-toast";
 
 export const InviteModal = (budgetId, modal2Open, setModal2Open) => {
-  const [email, setEmail] = useState("");
   const [InviteUser, { loading }] = useMutation(INVITE_USER, {
     onCompleted: () => {
       toast.success("User invited successfully", {
@@ -26,23 +25,16 @@ export const InviteModal = (budgetId, modal2Open, setModal2Open) => {
       });
     },
   });
-  const handleInviteUser = () => {
-    InviteUser(
-      {
-        variables: {
-          email: email,
-          budgetId: budgetId.budgetId,
-        },
+  const handleInviteUser = (values) => {
+    InviteUser({
+      variables: {
+        budgetId: budgetId.budgetId,
+        email: values.email,
       },
-      {
-        refetchQueries: () => [
-          {
-            query: GET_BUDGETS,
-          },
-        ],
-      }
-    );
+    });
+    budgetId.setIsModalVisible(false);
   };
+
   return (
     <Modal
       title="Invite User to Budget"
@@ -58,10 +50,7 @@ export const InviteModal = (budgetId, modal2Open, setModal2Open) => {
         layout="vertical"
         onFinishFailed={() => budgetId.setIsModalVisible(false)}
         autoComplete="off"
-        onFinish={(values) => {
-          handleInviteUser();
-          budgetId.setIsModalVisible(false);
-        }}
+        onFinish={handleInviteUser}
       >
         <Form.Item
           label="Email"

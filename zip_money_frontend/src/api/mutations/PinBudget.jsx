@@ -5,7 +5,6 @@ const PIN_BUDGET = gql`
     pinBudget(budgetId: $budgetId) {
       budget {
         isPined
-        isOwner
       }
     }
   }
